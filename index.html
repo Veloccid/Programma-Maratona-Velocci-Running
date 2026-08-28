@@ -248,6 +248,21 @@
       margin-top:10px; letter-spacing:0.03em; line-height:1.5;
     }
     .st-status.err { color:var(--red); }
+    .pg-delta {
+      font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:0.04em;
+      text-align:center; margin-top:8px; min-height:0.9em;
+    }
+    .pg-delta.ok    { color:var(--green); }
+    .pg-delta.over  { color:var(--gold); }
+    .pg-delta.under { color:var(--muted); }
+    .s-row.extra {
+      opacity:0.85; border-style:dashed;
+    }
+    .s-extra-tag {
+      font-family:'Space Mono',monospace; font-size:0.5rem; letter-spacing:0.1em;
+      color:var(--purple); border:1px solid var(--purple); border-radius:5px;
+      padding:2px 5px; flex-shrink:0;
+    }
     .s-real {
       font-family:'Space Mono',monospace; font-size:0.62rem; color:var(--green);
       margin-top:3px; letter-spacing:0.02em;
@@ -300,13 +315,14 @@
         <div class="prog-bar"><div class="prog-fill" id="pg-sess-bar" style="width:0%"></div></div>
       </div>
       <div class="prog-box">
-        <div class="prog-lbl">Km corsi</div>
+        <div class="prog-lbl" id="pg-km-lbl">Km corsi</div>
         <div class="prog-val" id="pg-km">0<small>/0</small></div>
         <div class="prog-bar"><div class="prog-fill" id="pg-km-bar" style="width:0%"></div></div>
       </div>
     </div>
+    <div class="pg-delta" id="pg-delta"></div>
     <div class="season-line">
-      <span class="season-lbl">Totale stagione</span>
+      <span class="season-lbl" id="pg-season-lbl">Totale stagione</span>
       <span class="season-val" id="pg-season">0 km</span>
     </div>
     <div style="height:14px"></div>
@@ -778,16 +794,57 @@ function seasonKm(){
   return Math.round(tot*10)/10;
 }
 
+// ── KM REALI (da Strava) ──
+// Sommo tutte le attivita' di corsa nel periodo, abbinate o no a una seduta:
+// un fuori programma sono chilometri corsi comunque.
+function stConnected(){ return !!(ST && ST.tok && ST.acts && Object.keys(ST.acts).length); }
+
+function realKmBetween(fromStr,toStr){
+  if(!ST||!ST.acts) return 0;
+  const from=toDate(fromStr), to=toDate(toStr);
+  let tot=0;
+  Object.keys(ST.acts).forEach(day=>{
+    const d=toDate(day);
+    if(d<from||d>to) return;
+    ST.acts[day].forEach(a=>{ if(RUN_T.indexOf(a.type)>=0) tot+=a.km||0; });
+  });
+  return Math.round(tot*10)/10;
+}
+
+function weekRealKm(week){ return realKmBetween(week.start,week.end); }
+
+function seasonRealKm(){
+  const today=new Date(); today.setHours(0,0,0,0);
+  let end=W[W.length-1].end;
+  return realKmBetween(W[0].start,end);
+}
+
 function renderProgress(week){
   const st=weekStats(week);
+  const live=stConnected();
+  const kDone=live?weekRealKm(week):st.kDone;
+  const season=live?seasonRealKm():seasonKm();
+
   document.getElementById('pg-sess').innerHTML=st.sDone+'<small>/'+st.sTot+'</small>';
-  document.getElementById('pg-km').innerHTML=st.kDone+'<small>/'+st.kTot+'</small>';
+  document.getElementById('pg-km').innerHTML=kDone+'<small>/'+st.kTot+'</small>';
+  document.getElementById('pg-km-lbl').textContent=live?'Km corsi (reali)':'Km corsi';
+  document.getElementById('pg-season-lbl').textContent=live?'Totale stagione \u00B7 reale':'Totale stagione';
+
   const sp=st.sTot?Math.round(st.sDone/st.sTot*100):0;
-  const kp=st.kTot?Math.round(st.kDone/st.kTot*100):0;
+  const kp=st.kTot?Math.round(kDone/st.kTot*100):0;
   const sb=document.getElementById('pg-sess-bar'), kb=document.getElementById('pg-km-bar');
-  sb.style.width=sp+'%'; sb.className='prog-fill'+(sp>=100?' full':'');
-  kb.style.width=kp+'%'; kb.className='prog-fill'+(kp>=100?' full':'');
-  document.getElementById('pg-season').textContent=seasonKm()+' km';
+  sb.style.width=Math.min(sp,100)+'%'; sb.className='prog-fill'+(sp>=100?' full':'');
+  kb.style.width=Math.min(kp,100)+'%'; kb.className='prog-fill'+(kp>=100?' full':'');
+  document.getElementById('pg-season').textContent=season+' km';
+
+  // Scarto tra corso e programmato: e' la spia del "corro piu' del previsto"
+  const dl=document.getElementById('pg-delta');
+  if(live && st.kTot){
+    const d=Math.round((kDone-st.kTot)*10)/10;
+    if(Math.abs(d)<0.5){ dl.textContent='In linea con il programma'; dl.className='pg-delta ok'; }
+    else if(d>0){ dl.textContent='+'+d+' km sopra il programmato'; dl.className='pg-delta over'; }
+    else { dl.textContent=d+' km sotto il programmato'; dl.className='pg-delta under'; }
+  } else { dl.textContent=''; dl.className='pg-delta'; }
 }
 
 function renderWeek(){
@@ -806,6 +863,7 @@ function renderWeek(){
   }
   const body=document.getElementById('week-body');
   body.innerHTML='';
+  const usedIds={};
   week.s.forEach(s=>{
     const sd=toDate(s.date);
     const isToday=sd.getTime()===today.getTime();
@@ -828,6 +886,7 @@ function renderWeek(){
     txt.textContent=s.text;
     const act=matchActivity(s);
     if(act){
+      usedIds[act.id]=1;
       const rl=document.createElement('div');
       rl.className='s-real';
       rl.textContent=realLine(act);
@@ -860,8 +919,63 @@ function renderWeek(){
     body.appendChild(row);
   });
 
+  renderExtras(week, body, usedIds);
   renderProgress(week);
 }
+
+// Attivita' Strava della settimana che non corrispondono a nessuna seduta
+// del piano: escursioni, sci, bici, camminate. Informative, non spuntano nulla.
+function renderExtras(week, body, usedIds){
+  if(!ST||!ST.acts) return;
+  const from=toDate(week.start), to=toDate(week.end);
+  const extras=[];
+  Object.keys(ST.acts).forEach(day=>{
+    const d=toDate(day);
+    if(d<from||d>to) return;
+    ST.acts[day].forEach(a=>{
+      if(usedIds[a.id]) return;
+      extras.push(Object.assign({_day:day},a));
+    });
+  });
+  if(!extras.length) return;
+  extras.sort((a,b)=>a._day<b._day?-1:1);
+
+  extras.forEach(a=>{
+    const d=toDate(a._day);
+    const row=document.createElement('div');
+    row.className='s-row extra';
+    row.style.cursor='default';
+
+    const dcol=document.createElement('div');
+    dcol.className='s-day-col';
+    dcol.innerHTML='<div class="s-day">'+DAYS_IT[d.getDay()]+'</div><div class="s-daynum">'+a._day.split('-')[2]+'</div>';
+
+    const dot=document.createElement('div');
+    dot.className='s-dot';
+    dot.style.background='var(--purple)';
+
+    const txt=document.createElement('div');
+    txt.className='s-text';
+    txt.textContent=sportIT(a.type);
+    const rl=document.createElement('div');
+    rl.className='s-real';
+    rl.style.color='var(--purple)';
+    rl.textContent=realLine(a);
+    txt.appendChild(rl);
+
+    const tag=document.createElement('div');
+    tag.className='s-extra-tag';
+    tag.textContent='EXTRA';
+
+    const sp=document.createElement('div');
+    sp.style.width='20px'; sp.style.flexShrink='0';
+
+    row.appendChild(dcol); row.appendChild(dot); row.appendChild(txt);
+    row.appendChild(tag); row.appendChild(sp);
+    body.appendChild(row);
+  });
+}
+var DAYS_IT=['DOM','LUN','MAR','MER','GIO','VEN','SAB'];
 
 weekIdx=getAutoWeek();
 renderWeek();
@@ -905,6 +1019,19 @@ function stSave(){ try{ localStorage.setItem(ST_KEY,JSON.stringify(ST)); }catch(
 const RUN_T=['Run','TrailRun','VirtualRun'];
 const GYM_T=['WeightTraining','Workout','Crossfit','Elliptical'];
 const TEN_T=['Tennis','Squash','Racquetball','Pickleball','Badminton'];
+// Outdoor: non spuntano nessuna seduta, compaiono come attivita' extra
+const OUT_T=['Hike','Walk','Snowshoe','AlpineSki','BackcountrySki','NordicSki','Snowboard','RockClimbing','Ride','Swim','Kayaking','InlineSkate','IceSkate','Golf','Soccer','Basketball','Yoga'];
+const SPORT_IT={
+  Hike:'Escursione', Walk:'Camminata', Snowshoe:'Ciaspole',
+  AlpineSki:'Sci', BackcountrySki:'Scialpinismo', NordicSki:'Sci di fondo',
+  Snowboard:'Snowboard', RockClimbing:'Arrampicata', Ride:'Bici', Swim:'Nuoto',
+  Kayaking:'Kayak', InlineSkate:'Pattini', IceSkate:'Pattinaggio', Golf:'Golf',
+  Soccer:'Calcio', Basketball:'Basket', Yoga:'Yoga',
+  Run:'Corsa', TrailRun:'Trail', VirtualRun:'Tapis roulant',
+  WeightTraining:'Pesi', Workout:'Workout', Crossfit:'Crossfit',
+  Elliptical:'Ellittica', Tennis:'Tennis', Squash:'Squash'
+};
+function sportIT(t){ return SPORT_IT[t] || t; }
 function famFor(t){ if(t==='gym') return GYM_T; if(t==='tennis') return TEN_T; return RUN_T; }
 
 function matchActivity(s){
@@ -919,15 +1046,20 @@ function matchActivity(s){
 
 function realLine(a){
   const p=[];
+  const isRun=RUN_T.indexOf(a.type)>=0;
   if(a.km) p.push(a.km.toFixed(1)+' km');
-  if(a.km>0.3 && a.moving){
+  // Il passo ha senso solo di corsa: su escursioni e sci sarebbe un numero inutile
+  if(isRun && a.km>0.3 && a.moving){
     const t=Math.round(a.moving/a.km);
     p.push(Math.floor(t/60)+':'+pad(t%60)+'/km');
-  } else if(a.moving){
-    p.push(Math.round(a.moving/60)+' min');
   }
+  if(a.moving && (!isRun || !a.km)){
+    const m=Math.round(a.moving/60);
+    p.push(m>=60 ? Math.floor(m/60)+'h'+pad(m%60) : m+' min');
+  }
+  if(a.elev>150) p.push('D+ '+a.elev+'m');
   if(a.hr) p.push('FC '+a.hr);
-  return '\u21B3 '+(p.length?p.join(' \u00B7 '):a.name);
+  return '\u21B3 '+(p.length?p.join(' \u00B7 '):(a.name||''));
 }
 
 function stStatus(msg,isErr){
