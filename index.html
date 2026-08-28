@@ -230,6 +230,28 @@
     .p-fin  { font-family:'Bebas Neue',sans-serif; font-size:0.8rem; letter-spacing:0.06em; color:var(--green); background:rgba(26,104,66,0.1); border-radius:6px; padding:2px 6px; }
 
     .footer { text-align:center; padding:18px 0 4px; font-family:'Bebas Neue',sans-serif; font-size:0.7rem; letter-spacing:0.25em; color:var(--muted); }
+
+    /* ── STRAVA ── */
+    .st-row { display:flex; align-items:center; gap:8px; }
+    .st-btn {
+      flex:1; background:#FC4C02; color:#fff; border:none; border-radius:10px;
+      padding:13px 10px; font-family:'Bebas Neue',sans-serif; font-size:1rem;
+      letter-spacing:0.09em; cursor:pointer; -webkit-tap-highlight-color:transparent;
+    }
+    .st-btn:active { opacity:0.8; }
+    .st-btn.ghost {
+      background:transparent; color:var(--muted);
+      border:1px solid var(--border); flex:0 0 auto; padding:13px 16px;
+    }
+    .st-status {
+      font-family:'Space Mono',monospace; font-size:0.6rem; color:var(--muted);
+      margin-top:10px; letter-spacing:0.03em; line-height:1.5;
+    }
+    .st-status.err { color:var(--red); }
+    .s-real {
+      font-family:'Space Mono',monospace; font-size:0.62rem; color:var(--green);
+      margin-top:3px; letter-spacing:0.02em;
+    }
   </style>
 </head>
 <body>
@@ -291,6 +313,13 @@
     <div id="block-pill-wrap"></div>
     <div id="week-body"></div>
     <button class="reset-btn" id="btn-reset">↺ Azzera spunte settimana</button>
+  </div>
+
+  <!-- STRAVA -->
+  <div class="card">
+    <div class="card-label">🔗 Strava</div>
+    <div id="st-body"></div>
+    <div class="st-status" id="st-status"></div>
   </div>
 
   <!-- TRAINING RULES (accordion) -->
@@ -797,6 +826,13 @@ function renderWeek(){
     const txt=document.createElement('div');
     txt.className='s-text';
     txt.textContent=s.text;
+    const act=matchActivity(s);
+    if(act){
+      const rl=document.createElement('div');
+      rl.className='s-real';
+      rl.textContent=realLine(act);
+      txt.appendChild(rl);
+    }
 
     row.appendChild(dcol);row.appendChild(dot);row.appendChild(txt);
 
@@ -857,6 +893,179 @@ function renderRaces(){
   });
 }
 renderRaces();
+
+// ══════════════════════════════════════════════════════
+//  STRAVA
+// ══════════════════════════════════════════════════════
+const ST_KEY='velocci_strava_v1';
+var ST={tok:null,acts:{},last:null,athlete:null};
+try{ const raw=localStorage.getItem(ST_KEY); if(raw) ST=Object.assign(ST,JSON.parse(raw)); }catch(e){}
+function stSave(){ try{ localStorage.setItem(ST_KEY,JSON.stringify(ST)); }catch(e){} }
+
+const RUN_T=['Run','TrailRun','VirtualRun'];
+const GYM_T=['WeightTraining','Workout','Crossfit','Elliptical'];
+const TEN_T=['Tennis','Squash','Racquetball','Pickleball','Badminton'];
+function famFor(t){ if(t==='gym') return GYM_T; if(t==='tennis') return TEN_T; return RUN_T; }
+
+function matchActivity(s){
+  if(!ST||!ST.acts) return null;
+  const list=ST.acts[s.date];
+  if(!list||!list.length) return null;
+  const fam=famFor(s.type);
+  const hit=list.filter(a=>fam.indexOf(a.type)>=0);
+  if(!hit.length) return null;
+  return hit.slice().sort((a,b)=>(b.km||0)-(a.km||0))[0];
+}
+
+function realLine(a){
+  const p=[];
+  if(a.km) p.push(a.km.toFixed(1)+' km');
+  if(a.km>0.3 && a.moving){
+    const t=Math.round(a.moving/a.km);
+    p.push(Math.floor(t/60)+':'+pad(t%60)+'/km');
+  } else if(a.moving){
+    p.push(Math.round(a.moving/60)+' min');
+  }
+  if(a.hr) p.push('FC '+a.hr);
+  return '\u21B3 '+(p.length?p.join(' \u00B7 '):a.name);
+}
+
+function stStatus(msg,isErr){
+  const el=document.getElementById('st-status');
+  el.textContent=msg||'';
+  el.className='st-status'+(isErr?' err':'');
+}
+
+async function stApi(payload){
+  const r=await fetch('/api/strava',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  });
+  let d={};
+  try{ d=await r.json(); }catch(e){}
+  if(!r.ok) throw new Error(d.message||d.error||('HTTP '+r.status));
+  return d;
+}
+
+async function stToken(){
+  if(!ST.tok) throw new Error('non collegato');
+  const now=Math.floor(Date.now()/1000);
+  if(ST.tok.expires_at && ST.tok.expires_at>now+120) return ST.tok.access_token;
+  const t=await stApi({action:'refresh',refresh_token:ST.tok.refresh_token});
+  ST.tok=Object.assign({},ST.tok,t); stSave();
+  return ST.tok.access_token;
+}
+
+async function stConnect(){
+  stStatus('Apro Strava\u2026');
+  try{
+    const r=await fetch('/api/strava');
+    const d=await r.json();
+    if(!d.clientId) throw new Error(d.message||'Client ID assente');
+    const u=new URL('https://www.strava.com/oauth/authorize');
+    u.searchParams.set('client_id',d.clientId);
+    u.searchParams.set('redirect_uri',location.origin+location.pathname);
+    u.searchParams.set('response_type','code');
+    u.searchParams.set('approval_prompt','auto');
+    u.searchParams.set('scope','activity:read_all');
+    location.href=u.toString();
+  }catch(e){ stStatus('Errore: '+e.message,true); }
+}
+
+async function stCallback(){
+  const p=new URLSearchParams(location.search);
+  if(p.get('error')){ history.replaceState({},'',location.pathname); stStatus('Autorizzazione rifiutata su Strava.',true); return; }
+  const code=p.get('code');
+  if(!code) return;
+  history.replaceState({},'',location.pathname);
+  stStatus('Collegamento in corso\u2026');
+  try{
+    const t=await stApi({action:'exchange',code});
+    ST.tok=t; ST.athlete=t.athlete; stSave(); stRender();
+    await stSync();
+  }catch(e){ stStatus('Collegamento fallito: '+e.message,true); }
+}
+
+async function stSync(){
+  if(!ST.tok) return;
+  stStatus('Sincronizzo\u2026');
+  try{
+    const token=await stToken();
+    const now=new Date();
+    const acts={};
+    let cur=toDate(W[0].start);
+    let guard=0;
+    while(cur<=now && guard++<20){
+      const end=new Date(cur); end.setDate(end.getDate()+90);
+      const after=Math.floor(cur.getTime()/1000)-1;
+      const before=Math.floor(Math.min(end.getTime(),now.getTime()+86400000)/1000);
+      const d=await stApi({action:'activities',access_token:token,after:after,before:before});
+      (d.activities||[]).forEach(a=>{
+        const day=String(a.start||'').slice(0,10);
+        if(!day) return;
+        (acts[day]=acts[day]||[]).push(a);
+      });
+      cur=end;
+    }
+    ST.acts=acts; ST.last=Date.now(); stSave();
+    autoTick();
+    renderWeek(); stRender();
+  }catch(e){ stStatus('Sync fallita: '+e.message,true); }
+}
+
+// Spunta automatica: aggiunge soltanto, non toglie mai le spunte manuali
+function autoTick(){
+  let n=0;
+  W.forEach(w=>w.s.forEach(s=>{
+    if(s.type==='rest') return;
+    if(isDone(s)) return;
+    if(matchActivity(s)){ DONE[sid(s)]=1; n++; }
+  }));
+  if(n) saveDone();
+  return n;
+}
+
+function stRender(){
+  const body=document.getElementById('st-body');
+  body.innerHTML='';
+  const row=document.createElement('div');
+  row.className='st-row';
+
+  if(!ST.tok){
+    const b=document.createElement('button');
+    b.className='st-btn'; b.textContent='COLLEGA STRAVA';
+    b.addEventListener('click',stConnect);
+    row.appendChild(b);
+    body.appendChild(row);
+    stStatus('Le sedute si spuntano da sole quando trovo l\u2019attivit\u00E0 corrispondente.');
+    return;
+  }
+
+  const b=document.createElement('button');
+  b.className='st-btn'; b.textContent='\u21BB SINCRONIZZA';
+  b.addEventListener('click',stSync);
+  const d=document.createElement('button');
+  d.className='st-btn ghost'; d.textContent='Scollega';
+  d.addEventListener('click',()=>{
+    ST={tok:null,acts:{},last:null,athlete:null}; stSave();
+    renderWeek(); stRender();
+    stStatus('Scollegato. Le spunte gi\u00E0 fatte restano.');
+  });
+  row.appendChild(b); row.appendChild(d);
+  body.appendChild(row);
+
+  let tot=0;
+  Object.keys(ST.acts||{}).forEach(k=>tot+=ST.acts[k].length);
+  const when=ST.last?new Date(ST.last).toLocaleString('it-IT',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'mai';
+  const who=ST.athlete&&ST.athlete.firstname?ST.athlete.firstname+' \u00B7 ':'';
+  stStatus(who+tot+' attivit\u00E0 caricate \u00B7 ultima sync: '+when);
+}
+
+autoTick();
+renderWeek();
+stRender();
+stCallback();
 </script>
 </body>
 </html>
