@@ -207,6 +207,61 @@
     .rc-rose    .rule-cat-title { color:var(--rose); }
     .rc-purple  .rule-cat-title { color:var(--purple); }
 
+    /* ── NUTRIZIONE ── */
+    .nu-phase { display:flex; align-items:flex-start; gap:11px; padding:12px 14px; border-radius:10px; border:2px solid; margin-bottom:12px; }
+    .nu-ph-icon { font-size:1.25rem; line-height:1.1; flex-shrink:0; }
+    .nu-ph-name { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; letter-spacing:0.1em; line-height:1.1; }
+    .nu-ph-sub { font-size:0.68rem; margin-top:4px; line-height:1.45; color:var(--muted); }
+    .ph-norm { border-color:var(--celeste); background:rgba(43,123,191,0.07); }
+    .ph-norm .nu-ph-name { color:var(--celeste); }
+    .ph-def  { border-color:var(--green);   background:rgba(26,104,66,0.07); }
+    .ph-def  .nu-ph-name { color:var(--green); }
+    .ph-off  { border-color:var(--gold);    background:rgba(192,120,24,0.1); }
+    .ph-off  .nu-ph-name { color:var(--gold); }
+    .ph-mant { border-color:var(--purple);  background:rgba(92,58,138,0.07); }
+    .ph-mant .nu-ph-name { color:var(--purple); }
+
+    .nu-prot { background:var(--cream); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:12px; }
+    .nu-prot-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; }
+    .nu-prot-lbl { font-family:'Bebas Neue',sans-serif; font-size:0.72rem; letter-spacing:0.14em; color:var(--muted); }
+    .nu-prot-val { font-family:'Space Mono',monospace; font-weight:700; font-size:1.2rem; color:var(--ink); }
+    .nu-prot-val small { font-size:0.58rem; color:var(--muted); font-weight:400; }
+    .nu-split { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+    .nu-slot { text-align:center; background:var(--white); border:1px solid var(--border); border-radius:7px; padding:8px 2px; }
+    .nu-slot-n { font-family:'Space Mono',monospace; font-weight:700; font-size:0.88rem; color:var(--ink); }
+    .nu-slot-l { font-size:0.46rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); margin-top:4px; line-height:1.25; }
+    .nu-slot.pw { border-color:var(--purple); background:rgba(92,58,138,0.05); }
+    .nu-slot.pw .nu-slot-n { color:var(--purple); }
+    .nu-note { font-size:0.63rem; color:var(--muted); line-height:1.45; margin-top:9px; }
+
+    .nu-w-row { display:flex; gap:8px; }
+    .nu-w-input {
+      flex:1; min-width:0; background:var(--white); border:2px solid var(--border); border-radius:10px;
+      padding:12px 10px; font-family:'Space Mono',monospace; font-size:0.95rem; color:var(--ink);
+      text-align:center; -webkit-appearance:none;
+    }
+    .nu-w-input:focus { outline:none; border-color:var(--celeste); }
+    .nu-w-btn {
+      background:var(--ink); color:#fff; border:none; border-radius:10px; padding:12px 20px;
+      font-family:'Bebas Neue',sans-serif; font-size:0.9rem; letter-spacing:0.11em; cursor:pointer;
+      flex-shrink:0; -webkit-tap-highlight-color:transparent;
+    }
+    .nu-w-btn:active { opacity:0.75; }
+    .nu-w-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:10px; }
+    .nu-w-box { background:var(--cream); border:1.5px solid var(--border); border-radius:9px; padding:11px 4px; text-align:center; }
+    .nu-w-num { font-family:'Space Mono',monospace; font-weight:700; font-size:0.95rem; color:var(--ink); line-height:1; }
+    .nu-w-num.neg { color:var(--green); }
+    .nu-w-num.pos { color:var(--gold); }
+    .nu-w-lbl { font-size:0.46rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-top:5px; }
+    .nu-alert { font-size:0.7rem; line-height:1.5; border-radius:9px; padding:10px 12px; margin-top:10px; border:1.5px solid; }
+    .al-ok   { border-color:var(--green);  background:rgba(26,104,66,0.07);  color:var(--green); }
+    .al-warn { border-color:var(--gold);   background:rgba(192,120,24,0.09); color:var(--gold); }
+    .al-bad  { border-color:var(--red);    background:rgba(160,40,40,0.07);  color:var(--red); }
+    .al-mut  { border-color:var(--border); background:var(--cream);          color:var(--muted); }
+    .nu-goal { display:flex; justify-content:space-between; align-items:baseline; padding:11px 14px; background:var(--ink); border-radius:10px; margin-top:10px; }
+    .nu-goal-lbl { font-family:'Bebas Neue',sans-serif; font-size:0.7rem; letter-spacing:0.14em; color:rgba(255,255,255,0.6); }
+    .nu-goal-val { font-family:'Space Mono',monospace; font-weight:700; font-size:0.95rem; color:#fff; }
+
     /* ── RACE CALENDAR ── */
     .race-list { display:flex; flex-direction:column; gap:8px; }
     .race-row { display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--cream); border-radius:8px; border:1.5px solid var(--border); }
@@ -338,6 +393,41 @@
     <div class="st-status" id="st-status"></div>
   </div>
 
+  <!-- NUTRIZIONE -->
+  <div class="card">
+    <div class="card-label">🥑 Nutrizione</div>
+    <div id="nu-phase-wrap"></div>
+
+    <div class="nu-prot">
+      <div class="nu-prot-top">
+        <span class="nu-prot-lbl">Proteine / giorno</span>
+        <span class="nu-prot-val">155<small> g · 1,95 g/kg</small></span>
+      </div>
+      <div class="nu-split">
+        <div class="nu-slot"><div class="nu-slot-n">35</div><div class="nu-slot-l">Colaz.</div></div>
+        <div class="nu-slot"><div class="nu-slot-n">45</div><div class="nu-slot-l">Pranzo</div></div>
+        <div class="nu-slot pw"><div class="nu-slot-n">25</div><div class="nu-slot-l">Post-all.</div></div>
+        <div class="nu-slot"><div class="nu-slot-n">50</div><div class="nu-slot-l">Cena</div></div>
+      </div>
+      <div class="nu-note">Max 2 misurini di polvere al giorno (~50 g). Isolato di siero, mai concentrato. Niente polioli in etichetta. Shaker mai dopo cena.</div>
+    </div>
+
+    <div class="nu-w-row">
+      <input class="nu-w-input" id="nu-w-in" type="number" step="0.1" inputmode="decimal" placeholder="peso kg">
+      <button class="nu-w-btn" id="nu-w-save">SALVA</button>
+    </div>
+    <div class="nu-w-stats">
+      <div class="nu-w-box"><div class="nu-w-num" id="nu-cur">—</div><div class="nu-w-lbl">Peso</div></div>
+      <div class="nu-w-box"><div class="nu-w-num" id="nu-dw">—</div><div class="nu-w-lbl">Δ / settimana</div></div>
+      <div class="nu-w-box"><div class="nu-w-num" id="nu-dt">—</div><div class="nu-w-lbl">Δ totale</div></div>
+    </div>
+    <div id="nu-alert"></div>
+    <div class="nu-goal">
+      <span class="nu-goal-lbl">Obiettivo</span>
+      <span class="nu-goal-val" id="nu-goal-val">76,5 kg</span>
+    </div>
+  </div>
+
   <!-- TRAINING RULES (accordion) -->
   <div class="card">
     <div class="card-label">📋 Training Rules</div>
@@ -414,6 +504,11 @@ const RULES = [
     'Caldo >22°C: 1L vest — elettroliti prima metà, acqua dopo',
     'Niente cibi o gel mai provati il giorno della gara',
     'Espresso + miele + banana: colazione pre-gara fissa',
+    '155g proteine al giorno — max 2 misurini di polvere',
+    'Isolato di siero, mai concentrato — niente polioli in etichetta',
+    'Deficit OFF nelle settimane di picco: si mangia per il carico',
+    'Calo massimo 0,4 kg/settimana — oltre si perde muscolo',
+    'Dopo serate pesanti: nessuna compensazione, solo camminata',
   ]},
   { icon:'🧘', title:'STRETCHING & MOBILITY', cls:'rc-purple', items:[
     'Stretching post-corsa: minimo 8–10 minuti sempre',
@@ -921,6 +1016,7 @@ function renderWeek(){
 
   renderExtras(week, body, usedIds);
   renderProgress(week);
+  if(typeof NU!=='undefined' && NU) nuRender();
 }
 
 // Attivita' Strava della settimana che non corrispondono a nessuna seduta
@@ -1194,10 +1290,141 @@ function stRender(){
   stStatus(who+tot+' attivit\u00E0 caricate \u00B7 ultima sync: '+when);
 }
 
+// ══════════════════════════════════════════════════════
+//  NUTRIZIONE
+// ══════════════════════════════════════════════════════
+const NU_KEY='velocci_nutri_v1';
+const NU_GOAL=76.5;
+var NU={w:{}};
+try{ const raw=localStorage.getItem(NU_KEY); if(raw){ const p=JSON.parse(raw); if(p&&p.w) NU=p; } }catch(e){}
+function nuSave(){ try{ localStorage.setItem(NU_KEY,JSON.stringify(NU)); }catch(e){} }
+
+// Fase alimentare per settimana. Il deficit non convive con il volume alto:
+// ottobre e il taper sono OFF, punto.
+function nuPhase(i){
+  const n=i+1;
+  if(n<=2)  return {k:'norm',icon:'🍽️',name:'Normocalorica',
+                    sub:'Solo proteine a 155 g. Nessun deficit: il volume sta salendo, prima si vede come rispondi.'};
+  if(n<=6)  return {k:'def', icon:'📉',name:'Deficit −250 kcal',
+                    sub:'Finestra 1. Si tolgono grassi e zuccheri liberi, non i carboidrati: quelli servono alle sedute.'};
+  if(n<=12) return {k:'off', icon:'⛔',name:'Deficit OFF',
+                    sub:'Blocco maratona: picco, lungo 36 e gara. Si mangia per sostenere il carico. Deficit qui = infortunio.'};
+  if(n<=14) return {k:'norm',icon:'🍽️',name:'Normocalorica',
+                    sub:'Recupero post-maratona. Proteine alte, zero restrizioni. Il corpo sta ricostruendo.'};
+  if(n<=17) return {k:'def', icon:'📉',name:'Deficit −250 kcal',
+                    sub:'Finestra 2. Volume basso: è qui che si fa il grosso del lavoro sulla composizione.'};
+  if(n<=19) return {k:'norm',icon:'🎄',name:'Normocalorica · Feste',
+                    sub:'Nessuna compensazione, nessun digiuno. Camminata post-pasto e si riprende il giorno dopo.'};
+  if(n<=23) return {k:'def', icon:'📉',name:'Deficit −250 kcal',
+                    sub:'Ultima finestra utile. Dopo la mezza test si chiude e si pensa solo a Roma.'};
+  return              {k:'mant',icon:'⚖️',name:'Mantenimento',
+                    sub:'Da qui al 14 marzo si mantiene. Arrivi a Roma con il peso che hai adesso.'};
+}
+
+function nuSeries(){
+  const out=[];
+  W.forEach((w,i)=>{ if(NU.w[w.start]!=null) out.push({i:i,v:NU.w[w.start]}); });
+  return out;
+}
+function fmtD(x){ return (x>0?'+':'')+x.toFixed(1); }
+
+function nuRender(){
+  if(!NU) return;
+  const wk=W[weekIdx];
+  const ph=nuPhase(weekIdx);
+
+  document.getElementById('nu-phase-wrap').innerHTML=
+    '<div class="nu-phase ph-'+ph.k+'">'+
+      '<div class="nu-ph-icon">'+ph.icon+'</div>'+
+      '<div><div class="nu-ph-name">'+ph.name+'</div>'+
+      '<div class="nu-ph-sub">'+ph.sub+'</div></div></div>';
+
+  const inp=document.getElementById('nu-w-in');
+  if(document.activeElement!==inp){
+    inp.value = NU.w[wk.start]!=null ? NU.w[wk.start] : '';
+  }
+  inp.placeholder='peso · sett. '+(weekIdx+1);
+
+  const ser=nuSeries();
+  const cur=NU.w[wk.start];
+  // ultima misura fino a questa settimana inclusa
+  let last=null, prev=null;
+  ser.forEach(p=>{ if(p.i<=weekIdx){ prev=last; last=p; } });
+
+  const eC=document.getElementById('nu-cur'),
+        eW=document.getElementById('nu-dw'),
+        eT=document.getElementById('nu-dt'),
+        eA=document.getElementById('nu-alert');
+
+  eC.textContent = last ? last.v.toFixed(1) : '—';
+  eC.className='nu-w-num';
+
+  let rate=null;
+  if(last&&prev){
+    const gap=Math.max(1,last.i-prev.i);
+    rate=(last.v-prev.v)/gap;
+    eW.textContent=fmtD(rate);
+    eW.className='nu-w-num '+(rate<-0.05?'neg':rate>0.05?'pos':'');
+  } else { eW.textContent='—'; eW.className='nu-w-num'; }
+
+  if(ser.length>=2){
+    const tot=last.v-ser[0].v;
+    eT.textContent=fmtD(tot);
+    eT.className='nu-w-num '+(tot<-0.05?'neg':tot>0.05?'pos':'');
+  } else { eT.textContent='—'; eT.className='nu-w-num'; }
+
+  document.getElementById('nu-goal-val').textContent =
+    last ? NU_GOAL.toFixed(1).replace('.',',')+' kg · '+fmtD(NU_GOAL-last.v)+' da fare'
+         : NU_GOAL.toFixed(1).replace('.',',')+' kg';
+
+  // ── Alert ──
+  let cls='al-mut', msg='';
+  if(!last){
+    msg='Registra il peso una volta a settimana: stessa mattina, a digiuno, dopo il bagno. Serve la media, non il singolo numero.';
+  } else if(rate===null){
+    msg='Prima misura salvata. Dalla prossima settimana calcolo il ritmo di calo.';
+  } else if(rate<=-0.55){
+    cls='al-bad';
+    msg='Calo troppo rapido ('+fmtD(rate)+' kg/sett). A questo ritmo stai perdendo massa magra, non solo grasso. Rimetti 150–200 kcal e ricontrolla fra sette giorni.';
+  } else if(ph.k==='off'&&rate<=-0.25){
+    cls='al-bad';
+    msg='Stai calando in una settimana a deficit OFF ('+fmtD(rate)+' kg). Con questo volume significa che mangi sotto il fabbisogno: è così che arrivano tibia e polpacci. Aumenta i carboidrati.';
+  } else if(ph.k==='def'&&rate>=-0.15&&rate<0.25){
+    cls='al-warn';
+    msg='Poco o nessun calo in settimana di deficit ('+fmtD(rate)+' kg). Prima di tagliare altro, controlla le porzioni reali per tre giorni: quasi sempre il deficit è più piccolo di quanto sembra.';
+  } else if(ph.k==='def'&&rate<-0.15&&rate>-0.55){
+    cls='al-ok';
+    msg='Ritmo corretto ('+fmtD(rate)+' kg/sett). Non accelerare: 0,3–0,4 è la finestra in cui il peso che perdi è grasso.';
+  } else if((ph.k==='norm'||ph.k==='mant'||ph.k==='off')&&Math.abs(rate)<0.3){
+    cls='al-ok';
+    msg='Peso stabile ('+fmtD(rate)+' kg). È esattamente quello che serve in questa fase.';
+  } else if(rate>=0.55){
+    cls='al-warn';
+    msg='Aumento marcato ('+fmtD(rate)+' kg). Se è la settimana dopo un lungo o un carico di carboidrati è quasi tutta acqua e glicogeno: aspetta la lettura successiva prima di intervenire.';
+  } else {
+    msg='Variazione '+fmtD(rate)+' kg. Nella norma: guarda la tendenza su tre settimane, non il singolo dato.';
+  }
+  eA.className='nu-alert '+cls;
+  eA.textContent=msg;
+}
+
+document.getElementById('nu-w-save').addEventListener('click',()=>{
+  const inp=document.getElementById('nu-w-in');
+  const v=parseFloat(String(inp.value).replace(',','.'));
+  const key=W[weekIdx].start;
+  if(isNaN(v)||v<40||v>150){ delete NU.w[key]; }
+  else { NU.w[key]=Math.round(v*10)/10; }
+  nuSave(); inp.blur(); nuRender();
+});
+document.getElementById('nu-w-in').addEventListener('keydown',e=>{
+  if(e.key==='Enter') document.getElementById('nu-w-save').click();
+});
+
 autoTick();
 renderWeek();
 stRender();
 stCallback();
+nuRender();
 </script>
 </body>
 </html>
