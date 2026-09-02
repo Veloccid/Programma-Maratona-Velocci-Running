@@ -207,61 +207,6 @@
     .rc-rose    .rule-cat-title { color:var(--rose); }
     .rc-purple  .rule-cat-title { color:var(--purple); }
 
-    /* ── NUTRIZIONE ── */
-    .nu-phase { display:flex; align-items:flex-start; gap:11px; padding:12px 14px; border-radius:10px; border:2px solid; margin-bottom:12px; }
-    .nu-ph-icon { font-size:1.25rem; line-height:1.1; flex-shrink:0; }
-    .nu-ph-name { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; letter-spacing:0.1em; line-height:1.1; }
-    .nu-ph-sub { font-size:0.68rem; margin-top:4px; line-height:1.45; color:var(--muted); }
-    .ph-norm { border-color:var(--celeste); background:rgba(43,123,191,0.07); }
-    .ph-norm .nu-ph-name { color:var(--celeste); }
-    .ph-def  { border-color:var(--green);   background:rgba(26,104,66,0.07); }
-    .ph-def  .nu-ph-name { color:var(--green); }
-    .ph-off  { border-color:var(--gold);    background:rgba(192,120,24,0.1); }
-    .ph-off  .nu-ph-name { color:var(--gold); }
-    .ph-mant { border-color:var(--purple);  background:rgba(92,58,138,0.07); }
-    .ph-mant .nu-ph-name { color:var(--purple); }
-
-    .nu-prot { background:var(--cream); border:1.5px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:12px; }
-    .nu-prot-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; }
-    .nu-prot-lbl { font-family:'Bebas Neue',sans-serif; font-size:0.72rem; letter-spacing:0.14em; color:var(--muted); }
-    .nu-prot-val { font-family:'Space Mono',monospace; font-weight:700; font-size:1.2rem; color:var(--ink); }
-    .nu-prot-val small { font-size:0.58rem; color:var(--muted); font-weight:400; }
-    .nu-split { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
-    .nu-slot { text-align:center; background:var(--white); border:1px solid var(--border); border-radius:7px; padding:8px 2px; }
-    .nu-slot-n { font-family:'Space Mono',monospace; font-weight:700; font-size:0.88rem; color:var(--ink); }
-    .nu-slot-l { font-size:0.46rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); margin-top:4px; line-height:1.25; }
-    .nu-slot.pw { border-color:var(--purple); background:rgba(92,58,138,0.05); }
-    .nu-slot.pw .nu-slot-n { color:var(--purple); }
-    .nu-note { font-size:0.63rem; color:var(--muted); line-height:1.45; margin-top:9px; }
-
-    .nu-w-row { display:flex; gap:8px; }
-    .nu-w-input {
-      flex:1; min-width:0; background:var(--white); border:2px solid var(--border); border-radius:10px;
-      padding:12px 10px; font-family:'Space Mono',monospace; font-size:0.95rem; color:var(--ink);
-      text-align:center; -webkit-appearance:none;
-    }
-    .nu-w-input:focus { outline:none; border-color:var(--celeste); }
-    .nu-w-btn {
-      background:var(--ink); color:#fff; border:none; border-radius:10px; padding:12px 20px;
-      font-family:'Bebas Neue',sans-serif; font-size:0.9rem; letter-spacing:0.11em; cursor:pointer;
-      flex-shrink:0; -webkit-tap-highlight-color:transparent;
-    }
-    .nu-w-btn:active { opacity:0.75; }
-    .nu-w-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:10px; }
-    .nu-w-box { background:var(--cream); border:1.5px solid var(--border); border-radius:9px; padding:11px 4px; text-align:center; }
-    .nu-w-num { font-family:'Space Mono',monospace; font-weight:700; font-size:0.95rem; color:var(--ink); line-height:1; }
-    .nu-w-num.neg { color:var(--green); }
-    .nu-w-num.pos { color:var(--gold); }
-    .nu-w-lbl { font-size:0.46rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-top:5px; }
-    .nu-alert { font-size:0.7rem; line-height:1.5; border-radius:9px; padding:10px 12px; margin-top:10px; border:1.5px solid; }
-    .al-ok   { border-color:var(--green);  background:rgba(26,104,66,0.07);  color:var(--green); }
-    .al-warn { border-color:var(--gold);   background:rgba(192,120,24,0.09); color:var(--gold); }
-    .al-bad  { border-color:var(--red);    background:rgba(160,40,40,0.07);  color:var(--red); }
-    .al-mut  { border-color:var(--border); background:var(--cream);          color:var(--muted); }
-    .nu-goal { display:flex; justify-content:space-between; align-items:baseline; padding:11px 14px; background:var(--ink); border-radius:10px; margin-top:10px; }
-    .nu-goal-lbl { font-family:'Bebas Neue',sans-serif; font-size:0.7rem; letter-spacing:0.14em; color:rgba(255,255,255,0.6); }
-    .nu-goal-val { font-family:'Space Mono',monospace; font-weight:700; font-size:0.95rem; color:#fff; }
-
     /* ── RACE CALENDAR ── */
     .race-list { display:flex; flex-direction:column; gap:8px; }
     .race-row { display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--cream); border-radius:8px; border:1.5px solid var(--border); }
@@ -303,6 +248,38 @@
       margin-top:10px; letter-spacing:0.03em; line-height:1.5;
     }
     .st-status.err { color:var(--red); }
+    .edit-toggle {
+      font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.08em;
+      background:transparent; border:1px solid var(--border); color:var(--muted);
+      border-radius:6px; padding:5px 9px; cursor:pointer; flex-shrink:0;
+    }
+    .edit-toggle.on { border-color:var(--celeste); color:var(--celeste); }
+    .s-row.editing { border-color:var(--celeste); }
+    .s-row.moved   { border-left:3px solid var(--celeste); }
+    .s-row.skipvol .s-text { opacity:0.4; text-decoration:line-through; }
+    .e-ctrl { display:flex; gap:4px; flex-shrink:0; }
+    .e-btn {
+      width:26px; height:26px; border-radius:6px; border:1px solid var(--border);
+      background:transparent; color:var(--txt); font-size:0.8rem; line-height:1;
+      cursor:pointer; padding:0; -webkit-tap-highlight-color:transparent;
+    }
+    .e-btn:active { background:var(--border); }
+    .e-btn.skip.on { border-color:var(--red); color:var(--red); }
+    .warn-box { margin-top:12px; display:flex; flex-direction:column; gap:6px; }
+    .warn-item {
+      font-family:'Space Mono',monospace; font-size:0.58rem; line-height:1.5;
+      color:var(--gold); background:rgba(255,180,0,0.07);
+      border:1px solid rgba(255,180,0,0.25); border-radius:8px; padding:8px 10px;
+    }
+    .edit-hint {
+      font-family:'Space Mono',monospace; font-size:0.55rem; color:var(--muted);
+      margin-top:10px; line-height:1.5; text-align:center;
+    }
+    .reset-edits {
+      width:100%; margin-top:10px; background:transparent; color:var(--muted);
+      border:1px solid var(--border); border-radius:8px; padding:9px;
+      font-family:'Space Mono',monospace; font-size:0.55rem; letter-spacing:0.06em; cursor:pointer;
+    }
     .pg-delta {
       font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:0.04em;
       text-align:center; margin-top:8px; min-height:0.9em;
@@ -356,6 +333,7 @@
   <div class="card">
     <div class="week-header">
       <div class="card-label" id="week-lbl" style="margin-bottom:0">📅 —</div>
+      <button class="edit-toggle" id="btn-edit">MODIFICA</button>
       <div class="week-nav">
         <button class="week-btn" id="btn-prev">‹</button>
         <button class="week-btn" id="btn-next">›</button>
@@ -391,41 +369,6 @@
     <div class="card-label">🔗 Strava</div>
     <div id="st-body"></div>
     <div class="st-status" id="st-status"></div>
-  </div>
-
-  <!-- NUTRIZIONE -->
-  <div class="card">
-    <div class="card-label">🥑 Nutrizione</div>
-    <div id="nu-phase-wrap"></div>
-
-    <div class="nu-prot">
-      <div class="nu-prot-top">
-        <span class="nu-prot-lbl">Proteine / giorno</span>
-        <span class="nu-prot-val">155<small> g · 1,95 g/kg</small></span>
-      </div>
-      <div class="nu-split">
-        <div class="nu-slot"><div class="nu-slot-n">35</div><div class="nu-slot-l">Colaz.</div></div>
-        <div class="nu-slot"><div class="nu-slot-n">45</div><div class="nu-slot-l">Pranzo</div></div>
-        <div class="nu-slot pw"><div class="nu-slot-n">25</div><div class="nu-slot-l">Post-all.</div></div>
-        <div class="nu-slot"><div class="nu-slot-n">50</div><div class="nu-slot-l">Cena</div></div>
-      </div>
-      <div class="nu-note">Max 2 misurini di polvere al giorno (~50 g). Isolato di siero, mai concentrato. Niente polioli in etichetta. Shaker mai dopo cena.</div>
-    </div>
-
-    <div class="nu-w-row">
-      <input class="nu-w-input" id="nu-w-in" type="number" step="0.1" inputmode="decimal" placeholder="peso kg">
-      <button class="nu-w-btn" id="nu-w-save">SALVA</button>
-    </div>
-    <div class="nu-w-stats">
-      <div class="nu-w-box"><div class="nu-w-num" id="nu-cur">—</div><div class="nu-w-lbl">Peso</div></div>
-      <div class="nu-w-box"><div class="nu-w-num" id="nu-dw">—</div><div class="nu-w-lbl">Δ / settimana</div></div>
-      <div class="nu-w-box"><div class="nu-w-num" id="nu-dt">—</div><div class="nu-w-lbl">Δ totale</div></div>
-    </div>
-    <div id="nu-alert"></div>
-    <div class="nu-goal">
-      <span class="nu-goal-lbl">Obiettivo</span>
-      <span class="nu-goal-val" id="nu-goal-val">76,5 kg</span>
-    </div>
   </div>
 
   <!-- TRAINING RULES (accordion) -->
@@ -504,11 +447,6 @@ const RULES = [
     'Caldo >22°C: 1L vest — elettroliti prima metà, acqua dopo',
     'Niente cibi o gel mai provati il giorno della gara',
     'Espresso + miele + banana: colazione pre-gara fissa',
-    '155g proteine al giorno — max 2 misurini di polvere',
-    'Isolato di siero, mai concentrato — niente polioli in etichetta',
-    'Deficit OFF nelle settimane di picco: si mangia per il carico',
-    'Calo massimo 0,4 kg/settimana — oltre si perde muscolo',
-    'Dopo serate pesanti: nessuna compensazione, solo camminata',
   ]},
   { icon:'🧘', title:'STRETCHING & MOBILITY', cls:'rc-purple', items:[
     'Stretching post-corsa: minimo 8–10 minuti sempre',
@@ -865,7 +803,7 @@ function saveDone(){
   if(memOnly) return;
   try{ localStorage.setItem(STORE_KEY,JSON.stringify(DONE)); }catch(e){ memOnly=true; }
 }
-function sid(s){ return s.date+'|'+s.type; }
+function sid(s){ return (s.orig||s.date)+'|'+s.type; }
 function isDone(s){ return !!DONE[sid(s)]; }
 function toggleDone(s){
   const k=sid(s);
@@ -873,11 +811,111 @@ function toggleDone(s){
   saveDone();
 }
 
+// ── MODIFICHE MANUALI (spostamenti e sedute saltate) ──
+// Chiave = data originale della seduta. Il piano base nel codice non cambia mai:
+// queste sono patch sopra, sempre annullabili.
+const EDIT_KEY='velocci_edits_v1';
+let EDITS={};
+try{ const raw=localStorage.getItem(EDIT_KEY); EDITS=raw?JSON.parse(raw):{}; }catch(e){ EDITS={}; }
+function saveEdits(){ try{ localStorage.setItem(EDIT_KEY,JSON.stringify(EDITS)); }catch(e){} }
+
+var DAYS_IT=['DOM','LUN','MAR','MER','GIO','VEN','SAB'];
+
+function applyEdits(){
+  W.forEach(w=>w.s.forEach(s=>{
+    if(!s.orig) s.orig=s.date;
+    const e=EDITS[sid(s)];
+    if(e && e.date){
+      s.date=e.date;
+      s.day=DAYS_IT[toDate(e.date).getDay()];
+    } else {
+      s.date=s.orig;
+      s.day=DAYS_IT[toDate(s.orig).getDay()];
+    }
+    s.skip=!!(e && e.skip);
+  }));
+}
+
+function isEdited(s){ const e=EDITS[sid(s)]; return !!(e && (e.date||e.skip)); }
+
+function shiftSession(s,delta,week){
+  const d=toDate(s.date); d.setDate(d.getDate()+delta);
+  const iso=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  // Resta dentro la settimana: spostare tra settimane diverse falserebbe i volumi
+  if(iso<week.start||iso>week.end) return false;
+  const k=sid(s);
+  EDITS[k]=Object.assign({},EDITS[k],{date:iso});
+  if(iso===s.orig) delete EDITS[k].date;
+  if(!EDITS[k].date && !EDITS[k].skip) delete EDITS[k];
+  saveEdits(); applyEdits();
+  return true;
+}
+
+function toggleSkip(s){
+  const k=sid(s);
+  const cur=EDITS[k]||{};
+  cur.skip=!cur.skip;
+  if(cur.skip) delete DONE[sid(s)];
+  EDITS[k]=cur;
+  if(!EDITS[k].date && !EDITS[k].skip) delete EDITS[k];
+  saveEdits(); saveDone(); applyEdits();
+}
+
+function resetWeekEdits(week){
+  week.s.forEach(s=>{ delete EDITS[sid(s)]; });
+  saveEdits(); applyEdits();
+}
+
+// ── CONTROLLO REGOLE ──
+// Regole fisse, scritte in codice: non dipendono da nessun modello.
+function isHard(s){
+  if(s.type==='quality'||s.type==='race') return true;
+  if((s.type==='medium'||s.type==='easy') && (s.km||0)>=16) return true;
+  return false;
+}
+function checkRules(week){
+  const warn=[];
+  const byDay={};
+  week.s.forEach(s=>{ if(s.type!=='rest'&&!s.skip) (byDay[s.date]=byDay[s.date]||[]).push(s); });
+  const days=Object.keys(byDay).sort();
+
+  // 1. Tennis e corsa dura lo stesso giorno — la combinazione della tibia
+  days.forEach(d=>{
+    const l=byDay[d];
+    if(l.some(x=>x.type==='tennis') && l.some(isHard))
+      warn.push('⚠ '+DAYS_IT[toDate(d).getDay()]+': tennis insieme a una seduta dura. È la combinazione che ti ha già dato problemi al polpaccio.');
+  });
+
+  // 2. Palestra il giorno prima di un lungo
+  days.forEach(d=>{
+    if(!byDay[d].some(x=>x.type==='gym')) return;
+    const nx=toDate(d); nx.setDate(nx.getDate()+1);
+    const iso=nx.getFullYear()+'-'+pad(nx.getMonth()+1)+'-'+pad(nx.getDate());
+    if(byDay[iso] && byDay[iso].some(x=>(x.km||0)>=18))
+      warn.push('⚠ Palestra il giorno prima del lungo di '+DAYS_IT[nx.getDay()]+'. Arrivi con le gambe già caricate.');
+  });
+
+  // 3. Due giorni duri consecutivi
+  for(let i=0;i<days.length-1;i++){
+    const a=toDate(days[i]), b=toDate(days[i+1]);
+    if((b-a)!==86400000) continue;
+    if(byDay[days[i]].some(isHard) && byDay[days[i+1]].some(isHard))
+      warn.push('⚠ '+DAYS_IT[a.getDay()]+' e '+DAYS_IT[b.getDay()]+' sono due giorni duri di fila. Servirebbe un giorno facile in mezzo.');
+  }
+
+  // 4. Nessun giorno completamente libero
+  const busy={}; week.s.forEach(s=>{ if(s.type!=='rest'&&!s.skip) busy[s.date]=1; });
+  if(Object.keys(busy).length>=7)
+    warn.push('⚠ Sette giorni su sette con qualcosa. Nessun recupero completo in settimana.');
+
+  return warn;
+}
+
 // ── STATISTICHE ──
 function weekStats(week){
   let sTot=0,sDone=0,kTot=0,kDone=0;
   week.s.forEach(x=>{
-    if(x.type==='rest') return;
+    if(x.type==='rest'||x.skip) return;
     sTot++; kTot+=x.km||0;
     if(isDone(x)){ sDone++; kDone+=x.km||0; }
   });
@@ -942,6 +980,8 @@ function renderProgress(week){
   } else { dl.textContent=''; dl.className='pg-delta'; }
 }
 
+let EDIT_MODE=false;
+
 function renderWeek(){
   const today=new Date();today.setHours(0,0,0,0);
   const week=W[weekIdx];
@@ -964,11 +1004,13 @@ function renderWeek(){
     const isToday=sd.getTime()===today.getTime();
     const isPast=sd<today&&!isToday;
     const done=isDone(s);
-    const skipped=isPast&&!done&&s.type!=='rest';
+    const skipped=isPast&&!done&&s.type!=='rest'&&!s.skip;
     const dayNum=s.date.split('-')[2];
+    const moved=!!(EDITS[sid(s)]&&EDITS[sid(s)].date);
 
     const row=document.createElement('div');
-    row.className='s-row'+(done?' done':'')+(skipped?' skipped':'');
+    row.className='s-row'+(done?' done':'')+(skipped?' skipped':'')
+      +(EDIT_MODE?' editing':'')+(moved?' moved':'')+(s.skip?' skipvol':'');
 
     const dcol=document.createElement('div');
     dcol.className='s-day-col'+(isToday?' today':'');
@@ -1000,7 +1042,22 @@ function renderWeek(){
       row.appendChild(badge);
     }
 
-    if(s.type!=='rest'){
+    if(EDIT_MODE && s.type!=='rest'){
+      const ctrl=document.createElement('div');
+      ctrl.className='e-ctrl';
+      const mk=(label,fn,cls)=>{
+        const b=document.createElement('button');
+        b.className='e-btn'+(cls||'');
+        b.textContent=label;
+        b.addEventListener('click',ev=>{ ev.stopPropagation(); fn(); renderWeek(); });
+        return b;
+      };
+      ctrl.appendChild(mk('‹',()=>shiftSession(s,-1,week)));
+      ctrl.appendChild(mk('›',()=>shiftSession(s,1,week)));
+      ctrl.appendChild(mk('⊘',()=>toggleSkip(s),s.skip?' skip on':' skip'));
+      row.appendChild(ctrl);
+      row.style.cursor='default';
+    }else if(s.type!=='rest'){
       const chk=document.createElement('div');
       chk.className='s-check';chk.textContent='✓';
       row.appendChild(chk);
@@ -1015,8 +1072,34 @@ function renderWeek(){
   });
 
   renderExtras(week, body, usedIds);
+
+  const warns=checkRules(week);
+  if(warns.length){
+    const wb=document.createElement('div');
+    wb.className='warn-box';
+    warns.forEach(t=>{
+      const w=document.createElement('div');
+      w.className='warn-item'; w.textContent=t;
+      wb.appendChild(w);
+    });
+    body.appendChild(wb);
+  }
+
+  if(EDIT_MODE){
+    const hint=document.createElement('div');
+    hint.className='edit-hint';
+    hint.textContent='‹ › spostano di un giorno dentro la settimana · ⊘ salta la seduta';
+    body.appendChild(hint);
+    if(week.s.some(isEdited)){
+      const rb=document.createElement('button');
+      rb.className='reset-edits';
+      rb.textContent='ANNULLA MODIFICHE DELLA SETTIMANA';
+      rb.addEventListener('click',()=>{ resetWeekEdits(week); renderWeek(); });
+      body.appendChild(rb);
+    }
+  }
+
   renderProgress(week);
-  if(typeof NU!=='undefined' && NU) nuRender();
 }
 
 // Attivita' Strava della settimana che non corrispondono a nessuna seduta
@@ -1071,10 +1154,18 @@ function renderExtras(week, body, usedIds){
     body.appendChild(row);
   });
 }
-var DAYS_IT=['DOM','LUN','MAR','MER','GIO','VEN','SAB'];
 
+
+applyEdits();
 weekIdx=getAutoWeek();
 renderWeek();
+document.getElementById('btn-edit').addEventListener('click',()=>{
+  EDIT_MODE=!EDIT_MODE;
+  const b=document.getElementById('btn-edit');
+  b.textContent=EDIT_MODE?'FATTO':'MODIFICA';
+  b.className='edit-toggle'+(EDIT_MODE?' on':'');
+  renderWeek();
+});
 document.getElementById('btn-prev').addEventListener('click',()=>{if(weekIdx>0){weekIdx--;renderWeek();}});
 document.getElementById('btn-next').addEventListener('click',()=>{if(weekIdx<W.length-1){weekIdx++;renderWeek();}});
 document.getElementById('btn-reset').addEventListener('click',()=>{
@@ -1290,141 +1381,10 @@ function stRender(){
   stStatus(who+tot+' attivit\u00E0 caricate \u00B7 ultima sync: '+when);
 }
 
-// ══════════════════════════════════════════════════════
-//  NUTRIZIONE
-// ══════════════════════════════════════════════════════
-const NU_KEY='velocci_nutri_v1';
-const NU_GOAL=76.5;
-var NU={w:{}};
-try{ const raw=localStorage.getItem(NU_KEY); if(raw){ const p=JSON.parse(raw); if(p&&p.w) NU=p; } }catch(e){}
-function nuSave(){ try{ localStorage.setItem(NU_KEY,JSON.stringify(NU)); }catch(e){} }
-
-// Fase alimentare per settimana. Il deficit non convive con il volume alto:
-// ottobre e il taper sono OFF, punto.
-function nuPhase(i){
-  const n=i+1;
-  if(n<=2)  return {k:'norm',icon:'🍽️',name:'Normocalorica',
-                    sub:'Solo proteine a 155 g. Nessun deficit: il volume sta salendo, prima si vede come rispondi.'};
-  if(n<=6)  return {k:'def', icon:'📉',name:'Deficit −250 kcal',
-                    sub:'Finestra 1. Si tolgono grassi e zuccheri liberi, non i carboidrati: quelli servono alle sedute.'};
-  if(n<=12) return {k:'off', icon:'⛔',name:'Deficit OFF',
-                    sub:'Blocco maratona: picco, lungo 36 e gara. Si mangia per sostenere il carico. Deficit qui = infortunio.'};
-  if(n<=14) return {k:'norm',icon:'🍽️',name:'Normocalorica',
-                    sub:'Recupero post-maratona. Proteine alte, zero restrizioni. Il corpo sta ricostruendo.'};
-  if(n<=17) return {k:'def', icon:'📉',name:'Deficit −250 kcal',
-                    sub:'Finestra 2. Volume basso: è qui che si fa il grosso del lavoro sulla composizione.'};
-  if(n<=19) return {k:'norm',icon:'🎄',name:'Normocalorica · Feste',
-                    sub:'Nessuna compensazione, nessun digiuno. Camminata post-pasto e si riprende il giorno dopo.'};
-  if(n<=23) return {k:'def', icon:'📉',name:'Deficit −250 kcal',
-                    sub:'Ultima finestra utile. Dopo la mezza test si chiude e si pensa solo a Roma.'};
-  return              {k:'mant',icon:'⚖️',name:'Mantenimento',
-                    sub:'Da qui al 14 marzo si mantiene. Arrivi a Roma con il peso che hai adesso.'};
-}
-
-function nuSeries(){
-  const out=[];
-  W.forEach((w,i)=>{ if(NU.w[w.start]!=null) out.push({i:i,v:NU.w[w.start]}); });
-  return out;
-}
-function fmtD(x){ return (x>0?'+':'')+x.toFixed(1); }
-
-function nuRender(){
-  if(!NU) return;
-  const wk=W[weekIdx];
-  const ph=nuPhase(weekIdx);
-
-  document.getElementById('nu-phase-wrap').innerHTML=
-    '<div class="nu-phase ph-'+ph.k+'">'+
-      '<div class="nu-ph-icon">'+ph.icon+'</div>'+
-      '<div><div class="nu-ph-name">'+ph.name+'</div>'+
-      '<div class="nu-ph-sub">'+ph.sub+'</div></div></div>';
-
-  const inp=document.getElementById('nu-w-in');
-  if(document.activeElement!==inp){
-    inp.value = NU.w[wk.start]!=null ? NU.w[wk.start] : '';
-  }
-  inp.placeholder='peso · sett. '+(weekIdx+1);
-
-  const ser=nuSeries();
-  const cur=NU.w[wk.start];
-  // ultima misura fino a questa settimana inclusa
-  let last=null, prev=null;
-  ser.forEach(p=>{ if(p.i<=weekIdx){ prev=last; last=p; } });
-
-  const eC=document.getElementById('nu-cur'),
-        eW=document.getElementById('nu-dw'),
-        eT=document.getElementById('nu-dt'),
-        eA=document.getElementById('nu-alert');
-
-  eC.textContent = last ? last.v.toFixed(1) : '—';
-  eC.className='nu-w-num';
-
-  let rate=null;
-  if(last&&prev){
-    const gap=Math.max(1,last.i-prev.i);
-    rate=(last.v-prev.v)/gap;
-    eW.textContent=fmtD(rate);
-    eW.className='nu-w-num '+(rate<-0.05?'neg':rate>0.05?'pos':'');
-  } else { eW.textContent='—'; eW.className='nu-w-num'; }
-
-  if(ser.length>=2){
-    const tot=last.v-ser[0].v;
-    eT.textContent=fmtD(tot);
-    eT.className='nu-w-num '+(tot<-0.05?'neg':tot>0.05?'pos':'');
-  } else { eT.textContent='—'; eT.className='nu-w-num'; }
-
-  document.getElementById('nu-goal-val').textContent =
-    last ? NU_GOAL.toFixed(1).replace('.',',')+' kg · '+fmtD(NU_GOAL-last.v)+' da fare'
-         : NU_GOAL.toFixed(1).replace('.',',')+' kg';
-
-  // ── Alert ──
-  let cls='al-mut', msg='';
-  if(!last){
-    msg='Registra il peso una volta a settimana: stessa mattina, a digiuno, dopo il bagno. Serve la media, non il singolo numero.';
-  } else if(rate===null){
-    msg='Prima misura salvata. Dalla prossima settimana calcolo il ritmo di calo.';
-  } else if(rate<=-0.55){
-    cls='al-bad';
-    msg='Calo troppo rapido ('+fmtD(rate)+' kg/sett). A questo ritmo stai perdendo massa magra, non solo grasso. Rimetti 150–200 kcal e ricontrolla fra sette giorni.';
-  } else if(ph.k==='off'&&rate<=-0.25){
-    cls='al-bad';
-    msg='Stai calando in una settimana a deficit OFF ('+fmtD(rate)+' kg). Con questo volume significa che mangi sotto il fabbisogno: è così che arrivano tibia e polpacci. Aumenta i carboidrati.';
-  } else if(ph.k==='def'&&rate>=-0.15&&rate<0.25){
-    cls='al-warn';
-    msg='Poco o nessun calo in settimana di deficit ('+fmtD(rate)+' kg). Prima di tagliare altro, controlla le porzioni reali per tre giorni: quasi sempre il deficit è più piccolo di quanto sembra.';
-  } else if(ph.k==='def'&&rate<-0.15&&rate>-0.55){
-    cls='al-ok';
-    msg='Ritmo corretto ('+fmtD(rate)+' kg/sett). Non accelerare: 0,3–0,4 è la finestra in cui il peso che perdi è grasso.';
-  } else if((ph.k==='norm'||ph.k==='mant'||ph.k==='off')&&Math.abs(rate)<0.3){
-    cls='al-ok';
-    msg='Peso stabile ('+fmtD(rate)+' kg). È esattamente quello che serve in questa fase.';
-  } else if(rate>=0.55){
-    cls='al-warn';
-    msg='Aumento marcato ('+fmtD(rate)+' kg). Se è la settimana dopo un lungo o un carico di carboidrati è quasi tutta acqua e glicogeno: aspetta la lettura successiva prima di intervenire.';
-  } else {
-    msg='Variazione '+fmtD(rate)+' kg. Nella norma: guarda la tendenza su tre settimane, non il singolo dato.';
-  }
-  eA.className='nu-alert '+cls;
-  eA.textContent=msg;
-}
-
-document.getElementById('nu-w-save').addEventListener('click',()=>{
-  const inp=document.getElementById('nu-w-in');
-  const v=parseFloat(String(inp.value).replace(',','.'));
-  const key=W[weekIdx].start;
-  if(isNaN(v)||v<40||v>150){ delete NU.w[key]; }
-  else { NU.w[key]=Math.round(v*10)/10; }
-  nuSave(); inp.blur(); nuRender();
-});
-document.getElementById('nu-w-in').addEventListener('keydown',e=>{
-  if(e.key==='Enter') document.getElementById('nu-w-save').click();
-});
-
 autoTick();
 renderWeek();
 stRender();
 stCallback();
-nuRender();
 </script>
 </body>
 </html>
