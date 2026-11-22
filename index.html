@@ -56,6 +56,12 @@
     }
     .tagline { font-family:'Pacifico',cursive; font-size:0.95rem; color:var(--muted); margin-top:4px; }
     .hdr-date { font-family:'Space Mono',monospace; font-size:0.6rem; color:var(--muted); margin-top:10px; opacity:0.6; }
+    .upd-row { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:12px; }
+    .upd-btn { font-family:'Bebas Neue',sans-serif; font-size:0.85rem; letter-spacing:0.12em; background:transparent; color:var(--celeste); border:1.5px solid var(--celeste); border-radius:20px; padding:5px 14px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .upd-btn:active { background:var(--celeste); color:#fff; }
+    .upd-btn.new { background:var(--celeste); color:#fff; }
+    .upd-ver { font-family:'Space Mono',monospace; font-size:0.55rem; color:var(--muted); opacity:0.7; }
+    .upd-msg { font-family:'Space Mono',monospace; font-size:0.55rem; color:var(--muted); margin-top:6px; min-height:0.8em; }
 
     /* ── CARDS ── */
     .card { background:var(--white); border:2px solid var(--ink); border-radius:12px; padding:18px; margin-bottom:12px; }
@@ -114,6 +120,7 @@
     .dot-tennis  { background:var(--green); }
     .dot-gym     { background:var(--purple); }
     .dot-race    { background:var(--ink); }
+    .dot-long    { background:var(--gold); box-shadow:0 0 0 2px rgba(192,120,24,0.25); }
     .s-text { font-size:0.82rem; color:var(--ink); flex:1; line-height:1.35; }
     .s-text.past { opacity:0.3; text-decoration:line-through; }
     .s-badge { font-family:'Bebas Neue',sans-serif; font-size:0.68rem; letter-spacing:0.08em; padding:2px 8px; border-radius:4px; white-space:nowrap; flex-shrink:0; }
@@ -124,6 +131,13 @@
     .b-tennis  { background:rgba(26,104,66,0.1);   color:var(--green); }
     .b-gym     { background:rgba(92,58,138,0.1);   color:var(--purple); }
     .b-race    { background:var(--ink); color:var(--white); }
+    .b-long    { background:var(--gold); color:var(--white); }
+    .s-note { font-size:0.66rem; color:var(--muted); margin-top:2px; line-height:1.35; }
+    .light-row { padding:11px 14px; background:var(--cream); border-radius:8px; border:1.5px solid var(--border); display:flex; gap:12px; align-items:center; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .light-row.past { opacity:0.6; }
+    .light-dot { width:22px; height:22px; border-radius:50%; border:2px solid var(--muted); flex-shrink:0; }
+    .light-dot.g { background:#2E9B57; border-color:#2E9B57; } .light-dot.y { background:#E0A81C; border-color:#E0A81C; } .light-dot.r { background:var(--red); border-color:var(--red); }
+    .light-ok { font-size:0.68rem; color:var(--muted); margin-top:3px; line-height:1.4; }
 
     /* ── SESSION STATES ── */
     .s-row { cursor:pointer; -webkit-tap-highlight-color:transparent; }
@@ -260,7 +274,7 @@
     .e-ctrl { display:flex; gap:4px; flex-shrink:0; }
     .e-btn {
       width:26px; height:26px; border-radius:6px; border:1px solid var(--border);
-      background:transparent; color:var(--txt); font-size:0.8rem; line-height:1;
+      background:transparent; color:var(--ink); font-size:0.8rem; line-height:1;
       cursor:pointer; padding:0; -webkit-tap-highlight-color:transparent;
     }
     .e-btn:active { background:var(--border); }
@@ -310,6 +324,11 @@
     <div class="deco-line"><span class="deco-text">★ &nbsp; Roma · Never Stop Running &nbsp; ★</span></div>
     <div class="tagline">running program</div>
     <div class="hdr-date" id="hdr-date"></div>
+    <div class="upd-row">
+      <button class="upd-btn" id="btn-upd">↻ AGGIORNA</button>
+      <span class="upd-ver" id="upd-ver"></span>
+    </div>
+    <div class="upd-msg" id="upd-msg"></div>
   </div>
 
   <!-- COUNTDOWN -->
@@ -371,6 +390,13 @@
     <div class="st-status" id="st-status"></div>
   </div>
 
+  <!-- SEMAFORI -->
+  <div class="card">
+    <div class="card-label">🚦 Semafori verso Roma</div>
+    <div class="race-list" id="light-list"></div>
+    <div class="edit-hint">tocca un semaforo per segnare l'esito: verde, giallo, rosso</div>
+  </div>
+
   <!-- TRAINING RULES (accordion) -->
   <div class="card">
     <div class="card-label">📋 Training Rules</div>
@@ -385,23 +411,31 @@
 
   <!-- PACE -->
   <div class="card">
-    <div class="card-label">⏱ Pace di Gara</div>
+    <div class="card-label">⏱ Ritmi Roma 2027</div>
     <div class="pace-grid">
       <div class="pace-box">
-        <div class="p-dist">10K</div><div class="p-val">4:48</div>
-        <div class="p-unit">min/km</div><div class="p-fin">sub 48'</div>
+        <div class="p-dist">Easy</div><div class="p-val">5:50–6:20</div>
+        <div class="p-unit">min/km</div><div class="p-fin">FC sotto 150</div>
       </div>
       <div class="pace-box">
-        <div class="p-dist">Mezza</div><div class="p-val">5:07</div>
-        <div class="p-unit">min/km</div><div class="p-fin">sub 1:48</div>
+        <div class="p-dist">Lungo</div><div class="p-val">5:40–6:00</div>
+        <div class="p-unit">min/km</div><div class="p-fin">FC sotto 155</div>
       </div>
       <div class="pace-box">
-        <div class="p-dist">Maratona Nov</div><div class="p-val">5:26</div>
-        <div class="p-unit">min/km</div><div class="p-fin">sub 3:50</div>
+        <div class="p-dist">Medio</div><div class="p-val">5:35–5:50</div>
+        <div class="p-unit">min/km</div><div class="p-fin">FC sotto 158</div>
       </div>
       <div class="pace-box">
-        <div class="p-dist">Roma 2027</div><div class="p-val">5:12</div>
+        <div class="p-dist">Ritmo maratona</div><div class="p-val">5:10–5:15</div>
         <div class="p-unit">min/km</div><div class="p-fin">sub 3:40</div>
+      </div>
+      <div class="pace-box">
+        <div class="p-dist">Soglia</div><div class="p-val">4:55–5:00</div>
+        <div class="p-unit">min/km</div><div class="p-fin">da feb 4:50–4:55</div>
+      </div>
+      <div class="pace-box">
+        <div class="p-dist">1000 m</div><div class="p-val">4:40–4:45</div>
+        <div class="p-unit">min/km</div><div class="p-fin">rec. 2'–2'30"</div>
       </div>
     </div>
   </div>
@@ -410,51 +444,111 @@
 </div>
 
 <script>
+// ── AGGIORNAMENTO ─────────────────────────────────────
+// Ogni nuova versione del file cambia APP_VERSION. Il pulsante scarica la pagina
+// senza cache, confronta la versione e ricarica. Le spunte restano: sono salvate a parte.
+const APP_VERSION='2026-11-22.1';
+(function(){
+  const p=new URLSearchParams(location.search);
+  if(p.has('v') && !p.has('code')) history.replaceState({},'',location.pathname);
+})();
+async function remoteVersion(){
+  const r=await fetch(location.pathname+'?check='+Date.now(),{cache:'no-store'});
+  const t=await r.text();
+  const m=t.match(/const APP_VERSION='([^']+)'/);
+  return m?m[1]:null;
+}
+function reloadFresh(){ location.replace(location.pathname+'?v='+Date.now()); }
+async function checkUpdate(manual){
+  const btn=document.getElementById('btn-upd'), msg=document.getElementById('upd-msg');
+  if(manual) msg.textContent='Controllo…';
+  try{
+    const rv=await remoteVersion();
+    if(rv && rv!==APP_VERSION){
+      if(manual){ msg.textContent='Nuova versione, ricarico…'; reloadFresh(); return; }
+      btn.classList.add('new'); btn.textContent='↻ NUOVA VERSIONE';
+      msg.textContent='Tocca per aggiornare il programma';
+    } else if(manual){
+      msg.textContent='Sei già all\u2019ultima versione';
+      setTimeout(()=>{ msg.textContent=''; },2500);
+    }
+  }catch(e){ if(manual) reloadFresh(); }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('upd-ver').textContent='v '+APP_VERSION;
+  document.getElementById('btn-upd').addEventListener('click',()=>checkUpdate(true));
+  checkUpdate(false);
+});
+// Quando riapri l'app dalla schermata Home controlla da sola
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') checkUpdate(false); });
+
 // ── DATA ──────────────────────────────────────────────
 const RACES = [
   {name:'10K',           date:'2026-08-24',emoji:'🔥',badge:"sub 48'"},
-  {name:'Mezza Maratona',date:'2026-09-27',emoji:'🏃',badge:'sub 1:48'},
-  {name:'Maratona',      date:'2026-11-15',emoji:'💪',badge:'sub 3:50'},
-  {name:'Mezza Test',    date:'2027-02-07',emoji:'⏱️',badge:'sub 1:45'},
+  {name:'Mezza Maratona',date:'2026-09-27',emoji:'🏃',badge:'sub 1:48',res:'1:48:31'},
+  {name:'Maratona Verona',date:'2026-11-15',emoji:'💪',badge:'sub 3:50',res:'3:51:21'},
+  {name:'Mezza Fregene', date:'2027-02-14',emoji:'⏱️',badge:'1:44'},
   {name:'Maratona Roma', date:'2027-03-14',emoji:'🏛️',badge:'sub 3:40'},
 ];
 
 const RULES = [
   { icon:'🚦', title:'PASSO & FREQUENZA CARDIACA', cls:'rc-celeste', items:[
-    'Km 1 — mai sotto 5:35/km in gara',
-    'Garmin alert FC: 162 bpm attivo sempre',
-    'FC >162 prima del km 10 → rallenta subito',
-    'Progressione: sempre lento→forte, mai il contrario',
+    'Easy: FC sotto 150 e mai più veloce di 5:45/km',
+    '10km a 5:20 al posto di 6 a 6:00 è un errore, non un bonus',
+    'Ritmo maratona (RM): 5:10–5:15/km',
+    'Gara: km 1 a 5:20–5:25 con FC sotto 150, poi 5:10–5:11 sul Garmin',
+    'Sampietrini e salite: a sforzo, non a passo',
     'Passo istantaneo: non guardarlo — usa il passo medio lap',
   ]},
-  { icon:'🔄', title:'RECUPERO', cls:'rc-green', items:[
-    'Post sessione di qualità: 48h facile o riposo',
-    'Post gara: corsa easy solo dopo 3–4 giorni',
+  { icon:'🔄', title:'SETTIMANA & FLESSIBILITÀ', cls:'rc-green', items:[
+    'Priorità: lungo > qualità > giovedì > sabato. Si taglia dal fondo',
+    'Salta una corsa: togli il sabato',
+    'Martedì impossibile: qualità al giovedì, niente forza gambe',
     'Tennis + corsa dura: mai lo stesso giorno',
-    'Dopo lungo >18km: riposo il giorno dopo',
-    'Alcool: irrilevante se >5 giorni prima della gara',
+    'Mai due giorni duri di fila',
+    'Stop fino a 4 giorni: riprendi dal calendario, senza recuperare',
+    'Stop di 5–10 giorni: settimana precedente a −20%',
+    'Serata pesante: nessuna compensazione, il giorno dopo normale',
   ]},
-  { icon:'🦵', title:'PREVENZIONE INFORTUNI', cls:'rc-gold', items:[
-    'Leg Press polpacci: OFF in settimana di gara',
-    'Monitorare zona tibia/polpaccio sinistro ad ogni uscita',
-    'Fastidio bilaterale post-run = normale readattamento',
-    'Dolore localizzato su un lato = fermarsi e segnalare',
-    'Stacking tennis + corsa hard: rischio tibia — evitare sempre',
+  { icon:'🦵', title:'FORZA & PREVENZIONE', cls:'rc-gold', items:[
+    'Giovedì sera: forza gambe 30 minuti, pesante e poche ripetizioni',
+    'Mai forza gambe il giorno prima di lungo o qualità',
+    'Scheda preventiva: blocco A lun, mer, sab · blocco B lun e gio',
+    'Dolore in un punto preciso di tibia o polpaccio: stop 3 giorni, bici',
+    'Indolenzimento diffuso che passa scaldandosi: si corre, easy',
+    'Ultima forza gambe: giovedì 4 marzo',
   ]},
-  { icon:'🥗', title:'NUTRIZIONE & GARA', cls:'rc-rose', items:[
-    'Gel caffeina (80mg) obbligatorio al km 10 in gara',
-    'Cena pre-gara: riso bianco o patate lesse — niente altro',
-    'Caldo >22°C: 1L vest — elettroliti prima metà, acqua dopo',
+  { icon:'🥗', title:'NUTRIZIONE & GEL', cls:'rc-rose', items:[
+    'Qualità e lunghi mai a digiuno. Easy fino a 60 minuti sì',
+    'Lungo: colazione 1 ora prima, pane bianco e marmellata',
+    'Gel nei lunghi: 40 g/ora a dicembre, 60 a gennaio, 60–75 a febbraio',
+    'Gara: circa 9 gel, uno ogni 25 minuti dal km 5',
+    'Deficit −300 kcal solo lunedì e venerdì, fino al 24 gennaio',
+    'Carico 12–13 marzo: pasta al pomodoro a pranzo, riso a cena',
     'Niente cibi o gel mai provati il giorno della gara',
-    'Espresso + miele + banana: colazione pre-gara fissa',
   ]},
-  { icon:'🧘', title:'STRETCHING & MOBILITY', cls:'rc-purple', items:[
+  { icon:'💧', title:'IDRATAZIONE & ALCOL', cls:'rc-purple', items:[
+    'Mattina di gara: 200–300 ml alla sveglia, tutti subito',
+    'In griglia: coperto fino all\'ultimo, pipì 10–15 minuti prima',
+    'In gara: 2–3 sorsi a ristoro con il gel, non il bicchiere intero',
+    'Dopo ogni lungo annota: stimolo sì/no, a che km, caffè sì/no',
+    'A gennaio un lungo senza caffè, come prova',
+    'Alcol sì: mercoledì dopo tennis, venerdì (1), domenica dopo pranzo',
+    'Alcol no: lunedì sera e sabato sera. Ultimo bicchiere mer 10 marzo',
+  ]},
+  { icon:'🧘', title:'STRETCHING & MOBILITY', cls:'rc-celeste', items:[
     'Stretching post-corsa: minimo 8–10 minuti sempre',
     'Focus: polpacci, flessori anca, piriforme, tibiale',
     'Foam rolling gambe: 2–3 volte a settimana',
     'Mobilità caviglia: esercizi di rinforzo preventivi quotidiani',
     'Captain\'s Chair: mantenere in ogni sessione palestra',
   ]},
+];
+
+const LIGHTS = [
+  {id:'s1',date:'2026-12-20',name:'Lungo 22km, ultimi 4 a RM',ok:'Verde se tieni 5:10–5:15 con FC del tratto sotto 166'},
+  {id:'s2',date:'2027-01-12',name:"Soglia 2×15'",ok:'Verde se 5:00/km o meglio e la seconda non è più lenta'},
+  {id:'s3',date:'2027-02-14',name:'Mezza a Fregene',ok:'≤1:44:00 sub 3:40 · 1:44–1:46 obiettivo 3:40–3:43 · oltre 1:46:30 obiettivo 3:45'},
 ];
 
 const W = [
@@ -566,162 +660,178 @@ const W = [
     {day:'SAB',date:'2026-11-14',text:'Riposo · riso o patate',type:'rest',km:0},
     {day:'DOM',date:'2026-11-15',text:'🏁 MARATONA — sub 3:50',type:'race',km:42.2},
   ]},
-  {block:'Recupero',label:'Sett. 13 — Riposo totale',start:'2026-11-16',end:'2026-11-22',s:[
-    {day:'LUN',date:'2026-11-16',text:'Riposo assoluto',type:'rest',km:0},
-    {day:'MAR',date:'2026-11-17',text:'Riposo',type:'rest',km:0},
-    {day:'MER',date:'2026-11-18',text:'Riposo',type:'rest',km:0},
-    {day:'GIO',date:'2026-11-19',text:'Riposo',type:'rest',km:0},
-    {day:'VEN',date:'2026-11-20',text:'Riposo',type:'rest',km:0},
-    {day:'SAB',date:'2026-11-21',text:'Passeggiata libera',type:'rest',km:0},
-    {day:'DOM',date:'2026-11-22',text:'Riposo',type:'rest',km:0},
+  {block:'Recupero',label:'Roma 1/17 — Recupero',start:'2026-11-16',end:'2026-11-22',s:[
+    {day:'LUN',date:'2026-11-16',text:'Riposo · post maratona',type:'rest',km:0},
+    {day:'MAR',date:'2026-11-17',text:'Camminata 30–40\'',type:'rest',km:0},
+    {day:'MER',date:'2026-11-18',text:'Tennis · salta o solo palleggio',type:'tennis',km:0},
+    {day:'GIO',date:'2026-11-19',text:'Camminata o bici leggera',type:'rest',km:0},
+    {day:'GIO',date:'2026-11-19',text:'Palestra · Push',type:'gym',km:0,n:'Solo parte alta, leggera'},
+    {day:'VEN',date:'2026-11-20',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2026-11-21',text:'Facilissimi 4km',type:'easy',km:4,n:'solo se le scale non danno più dolore'},
+    {day:'DOM',date:'2026-11-22',text:'Facile 6km',type:'easy',km:6},
   ]},
-  {block:'Recupero',label:'Sett. 14 — Rientro',start:'2026-11-23',end:'2026-11-29',s:[
-    {day:'LUN',date:'2026-11-23',text:'Riposo',type:'rest',km:0},
-    {day:'MAR',date:'2026-11-24',text:'Riposo',type:'rest',km:0},
+  {block:'Recupero',label:'Roma 2/17 — Rientro',start:'2026-11-23',end:'2026-11-29',s:[
+    {day:'LUN',date:'2026-11-23',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2026-11-24',text:'Facile 6km',type:'easy',km:6,n:'FC sotto 150'},
     {day:'MER',date:'2026-11-25',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2026-11-26',text:'Facile 6km · 6:10/km',type:'easy',km:6},
-    {day:'VEN',date:'2026-11-27',text:'Riposo',type:'rest',km:0},
-    {day:'SAB',date:'2026-11-28',text:'Facile 10km · 6:00/km',type:'easy',km:10},
-    {day:'DOM',date:'2026-11-29',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2026-11-26',text:'Facile 7km + 4 allunghi',type:'easy',km:7},
+    {day:'GIO',date:'2026-11-26',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe: solo tecnica, carichi minimi'},
+    {day:'VEN',date:'2026-11-27',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2026-11-28',text:'Facile 5km',type:'easy',km:5},
+    {day:'DOM',date:'2026-11-29',text:'Lungo facile 12km',type:'long',km:12,n:'5:50–6:10/km'},
   ]},
-  {block:'Recupero',label:'Sett. 15 — Riattivazione',start:'2026-11-30',end:'2026-12-06',s:[
-    {day:'LUN',date:'2026-11-30',text:'Riposo',type:'rest',km:0},
-    {day:'MAR',date:'2026-12-01',text:'Facile 6km',type:'easy',km:6},
+  {block:'Roma 2027',label:'Roma 3/17 — Base',start:'2026-11-30',end:'2026-12-06',s:[
+    {day:'LUN',date:'2026-11-30',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2026-12-01',text:'Facile 8km + 6 allunghi',type:'easy',km:8,n:'allunghi: 20" in progressione, recupero completo'},
     {day:'MER',date:'2026-12-02',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2026-12-03',text:'Facile 8km',type:'easy',km:8},
-    {day:'VEN',date:'2026-12-04',text:'Palestra — carichi alti',type:'gym',km:0},
-    {day:'SAB',date:'2026-12-05',text:'Lungo facile 12km',type:'medium',km:12},
-    {day:'DOM',date:'2026-12-06',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2026-12-03',text:'Facile 9km',type:'easy',km:9},
+    {day:'GIO',date:'2026-12-03',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 3×8 · bulgaro, stacco rumeno, step-down, hip thrust, soleo'},
+    {day:'VEN',date:'2026-12-04',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2026-12-05',text:'Facile 6km',type:'easy',km:6},
+    {day:'DOM',date:'2026-12-06',text:'Lungo lento 16km',type:'long',km:16,n:'traccia 01 · 5:40–6:00/km'},
   ]},
-  {block:'Recupero',label:'Sett. 16 — Base leggera',start:'2026-12-07',end:'2026-12-13',s:[
-    {day:'LUN',date:'2026-12-07',text:'Facile 6km',type:'easy',km:6},
-    {day:'MAR',date:'2026-12-08',text:'Facile 8km + allunghi',type:'easy',km:8},
+  {block:'Roma 2027',label:'Roma 4/17 — Base',start:'2026-12-07',end:'2026-12-13',s:[
+    {day:'LUN',date:'2026-12-07',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2026-12-08',text:'6×1\' brillante / 1\' lento',type:'quality',km:10,n:'10km totali con riscaldamento e defaticamento'},
     {day:'MER',date:'2026-12-09',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2026-12-10',text:'Medio 6km',type:'medium',km:6},
-    {day:'VEN',date:'2026-12-11',text:'Palestra',type:'gym',km:0},
-    {day:'SAB',date:'2026-12-12',text:'Lungo 14km',type:'medium',km:14},
-    {day:'DOM',date:'2026-12-13',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2026-12-10',text:'Facile 10km',type:'easy',km:10},
+    {day:'GIO',date:'2026-12-10',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 3×8 · bulgaro, stacco rumeno, step-down, hip thrust, soleo'},
+    {day:'VEN',date:'2026-12-11',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2026-12-12',text:'Facile 6km',type:'easy',km:6},
+    {day:'DOM',date:'2026-12-13',text:'Lungo lento 20km',type:'long',km:20,n:'traccia 02 · gel 40 g/ora'},
   ]},
-  {block:'Roma 2027',label:'Sett. 17 — Base',start:'2026-12-14',end:'2026-12-20',s:[
-    {day:'LUN',date:'2026-12-14',text:'Facile 6km',type:'easy',km:6},
-    {day:'MAR',date:'2026-12-15',text:'6×800m · 4:35/km',type:'quality',km:8},
+  {block:'Roma 2027',label:'Roma 5/17 — Semaforo 1',start:'2026-12-14',end:'2026-12-20',s:[
+    {day:'LUN',date:'2026-12-14',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2026-12-15',text:'Soglia 4×5\' · 4:55–5:00/km',type:'quality',km:11,n:'rec. 90" · 11km totali'},
     {day:'MER',date:'2026-12-16',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2026-12-17',text:'Medio 8km',type:'medium',km:8},
-    {day:'VEN',date:'2026-12-18',text:'Palestra',type:'gym',km:0},
-    {day:'SAB',date:'2026-12-19',text:'Lungo 18km · 5:45/km',type:'medium',km:18},
-    {day:'DOM',date:'2026-12-20',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2026-12-17',text:'Facile 11km',type:'easy',km:11},
+    {day:'GIO',date:'2026-12-17',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 3×8 · bulgaro, stacco rumeno, step-down, hip thrust, soleo'},
+    {day:'VEN',date:'2026-12-18',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2026-12-19',text:'Facile 6km',type:'easy',km:6},
+    {day:'DOM',date:'2026-12-20',text:'Lungo 22km · ultimi 4 a RM',type:'long',km:22,n:'traccia 01 + ciclabile 07 (2+2 a RM) · 🚦 SEMAFORO 1: FC del tratto RM sotto 166'},
   ]},
-  {block:'Roma 2027',label:'Sett. 18 — Feste',start:'2026-12-21',end:'2026-12-27',s:[
-    {day:'LUN',date:'2026-12-21',text:'Riposo',type:'rest',km:0},
-    {day:'MAR',date:'2026-12-22',text:'Facile 8km',type:'easy',km:8},
+  {block:'Roma 2027',label:'Roma 6/17 — Scarico feste',start:'2026-12-21',end:'2026-12-27',s:[
+    {day:'LUN',date:'2026-12-21',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2026-12-22',text:'5×3\' a 4:45/km',type:'quality',km:10,n:'rec. 2\' · 10km totali'},
     {day:'MER',date:'2026-12-23',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2026-12-24',text:'Medio 10km',type:'medium',km:10},
-    {day:'VEN',date:'2026-12-25',text:'Riposo — Natale 🎄',type:'rest',km:0},
-    {day:'SAB',date:'2026-12-26',text:'Lungo 14km',type:'medium',km:14},
-    {day:'DOM',date:'2026-12-27',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2026-12-24',text:'Facile 8km',type:'easy',km:8},
+    {day:'GIO',date:'2026-12-24',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 3×8 · bulgaro, stacco rumeno, step-down, hip thrust, soleo'},
+    {day:'VEN',date:'2026-12-25',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2026-12-26',text:'Facile 6km',type:'easy',km:6},
+    {day:'DOM',date:'2026-12-27',text:'Lungo lento 16km',type:'long',km:16,n:'traccia 06 Villa Pamphilj'},
   ]},
-  {block:'Roma 2027',label:'Sett. 19 — Capodanno',start:'2026-12-28',end:'2027-01-03',s:[
-    {day:'LUN',date:'2026-12-28',text:'Riposo',type:'rest',km:0},
-    {day:'MAR',date:'2026-12-29',text:'Facile 8km',type:'easy',km:8},
-    {day:'MER',date:'2026-12-30',text:'Riposo — Capodanno 🎉',type:'rest',km:0},
-    {day:'GIO',date:'2026-12-31',text:'Medio 12km',type:'medium',km:12},
-    {day:'VEN',date:'2027-01-01',text:'Riposo',type:'rest',km:0},
-    {day:'SAB',date:'2027-01-02',text:'Lungo 16km',type:'medium',km:16},
-    {day:'DOM',date:'2027-01-03',text:'Riposo',type:'rest',km:0},
+  {block:'Roma 2027',label:'Roma 7/17 — Costruzione',start:'2026-12-28',end:'2027-01-03',s:[
+    {day:'LUN',date:'2026-12-28',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2026-12-29',text:'Soglia 3×8\' · 4:55–5:00/km',type:'quality',km:12,n:'rec. 2\' · 12km totali'},
+    {day:'MER',date:'2026-12-30',text:'Tennis',type:'tennis',km:0},
+    {day:'GIO',date:'2026-12-31',text:'Medio 12km · 5:35–5:50/km',type:'medium',km:12},
+    {day:'GIO',date:'2026-12-31',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 3×6 pesante · bulgaro, stacco rumeno, step-down, hip thrust, soleo'},
+    {day:'VEN',date:'2027-01-01',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2027-01-02',text:'Facile 6km',type:'easy',km:6},
+    {day:'DOM',date:'2027-01-03',text:'Lungo lento 24km',type:'long',km:24,n:'traccia 03 · gel 60 g/ora'},
   ]},
-  {block:'Roma 2027',label:'Sett. 20 — Ripresa base',start:'2027-01-04',end:'2027-01-10',s:[
-    {day:'LUN',date:'2027-01-04',text:'Facile 8km',type:'easy',km:8},
-    {day:'MAR',date:'2027-01-05',text:'5×1000m · 4:30/km',type:'quality',km:10},
+  {block:'Roma 2027',label:'Roma 8/17 — Costruzione',start:'2027-01-04',end:'2027-01-10',s:[
+    {day:'LUN',date:'2027-01-04',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2027-01-05',text:'5×1000m · 4:40–4:45/km',type:'quality',km:12,n:'rec. 2\'30" · 12km totali'},
     {day:'MER',date:'2027-01-06',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2027-01-07',text:'Medio 8km',type:'medium',km:8},
-    {day:'VEN',date:'2027-01-08',text:'Palestra',type:'gym',km:0},
-    {day:'SAB',date:'2027-01-09',text:'Lungo 20km · 5:40/km',type:'medium',km:20},
-    {day:'DOM',date:'2027-01-10',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2027-01-07',text:'Medio 13km · 5:35–5:50/km',type:'medium',km:13},
+    {day:'GIO',date:'2027-01-07',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 3×6 pesante · bulgaro, stacco rumeno, step-down, hip thrust, soleo'},
+    {day:'VEN',date:'2027-01-08',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2027-01-09',text:'Facile 7km',type:'easy',km:7},
+    {day:'DOM',date:'2027-01-10',text:'Lungo 26km · ultimi 6 a RM',type:'long',km:26,n:'traccia 01 + ciclabile 07 (3+3 a RM)'},
   ]},
-  {block:'Roma 2027',label:'Sett. 21 — Base alta',start:'2027-01-11',end:'2027-01-17',s:[
-    {day:'LUN',date:'2027-01-11',text:'Facile 8km',type:'easy',km:8},
-    {day:'MAR',date:'2027-01-12',text:'Soglia 3×12\' · 4:55/km',type:'quality',km:12},
+  {block:'Roma 2027',label:'Roma 9/17 — Semaforo 2',start:'2027-01-11',end:'2027-01-17',s:[
+    {day:'LUN',date:'2027-01-11',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2027-01-12',text:'Soglia 2×15\' · 5:00/km o meglio',type:'quality',km:13,n:'rec. 3\' · 🚦 SEMAFORO 2: seconda ripetuta non più lenta della prima'},
     {day:'MER',date:'2027-01-13',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2027-01-14',text:'Medio 10km',type:'medium',km:10},
-    {day:'VEN',date:'2027-01-15',text:'Palestra',type:'gym',km:0},
-    {day:'SAB',date:'2027-01-16',text:'Lungo 22km · 5:35/km',type:'medium',km:22},
-    {day:'DOM',date:'2027-01-17',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2027-01-14',text:'Medio 14km · 5:35–5:50/km',type:'medium',km:14},
+    {day:'GIO',date:'2027-01-14',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 3×6 pesante · bulgaro, stacco rumeno, step-down, hip thrust, soleo'},
+    {day:'VEN',date:'2027-01-15',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2027-01-16',text:'Facile 7km',type:'easy',km:7},
+    {day:'DOM',date:'2027-01-17',text:'Lungo 28km progressivo',type:'long',km:28,n:'traccia 04 girando 2km prima · ultimi 8 da 5:30 a 5:15'},
   ]},
-  {block:'Roma 2027',label:'Sett. 22 — Build',start:'2027-01-18',end:'2027-01-24',s:[
-    {day:'LUN',date:'2027-01-18',text:'Facile 10km',type:'easy',km:10},
-    {day:'MAR',date:'2027-01-19',text:'4×1600m · 5:00/km',type:'quality',km:12},
+  {block:'Roma 2027',label:'Roma 10/17 — Scarico',start:'2027-01-18',end:'2027-01-24',s:[
+    {day:'LUN',date:'2027-01-18',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2027-01-19',text:'8×1\' brillante / 1\' lento',type:'quality',km:10,n:'10km totali'},
     {day:'MER',date:'2027-01-20',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2027-01-21',text:'Medio 12km · 5:20/km',type:'medium',km:12},
-    {day:'VEN',date:'2027-01-22',text:'Palestra',type:'gym',km:0},
-    {day:'SAB',date:'2027-01-23',text:'Lungo 26km · 5:30/km',type:'medium',km:26},
-    {day:'DOM',date:'2027-01-24',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2027-01-21',text:'Facile 10km',type:'easy',km:10},
+    {day:'GIO',date:'2027-01-21',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 3×6 pesante · bulgaro, stacco rumeno, step-down, hip thrust, soleo'},
+    {day:'VEN',date:'2027-01-22',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2027-01-23',text:'Facile 6km',type:'easy',km:6},
+    {day:'DOM',date:'2027-01-24',text:'Lungo 20km · 8 a RM',type:'long',km:20,n:'traccia 05: 5 giri di lago, 4 a RM'},
   ]},
-  {block:'Roma 2027',label:'Sett. 23 — Carico',start:'2027-01-25',end:'2027-01-31',s:[
-    {day:'LUN',date:'2027-01-25',text:'Facile 10km',type:'easy',km:10},
-    {day:'MAR',date:'2027-01-26',text:'5×1600m · 5:00/km',type:'quality',km:14},
+  {block:'Roma 2027',label:'Roma 11/17 — Lungo 35',start:'2027-01-25',end:'2027-01-31',s:[
+    {day:'LUN',date:'2027-01-25',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2027-01-26',text:'10km continui a RM · 5:10–5:15/km',type:'quality',km:14,n:'14km totali'},
     {day:'MER',date:'2027-01-27',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2027-01-28',text:'Medio 14km · 5:20/km',type:'medium',km:14},
-    {day:'VEN',date:'2027-01-29',text:'Palestra',type:'gym',km:0},
-    {day:'SAB',date:'2027-01-30',text:'Lungo 28km · 5:30/km',type:'medium',km:28},
-    {day:'DOM',date:'2027-01-31',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2027-01-28',text:'Medio 14km · 5:35–5:50/km',type:'medium',km:14},
+    {day:'GIO',date:'2027-01-28',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 3×6 pesante · bulgaro, stacco rumeno, step-down, hip thrust, soleo'},
+    {day:'VEN',date:'2027-01-29',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2027-01-30',text:'Facile 7km',type:'easy',km:7},
+    {day:'DOM',date:'2027-01-31',text:'🏔️ Lungo 35km lento',type:'long',km:35,n:'traccia 04 + 1,5km · resta a 32 se semaforo 2 non verde o tibie'},
   ]},
-  {block:'Roma 2027',label:'Sett. 24 — Test Mezza',start:'2027-02-01',end:'2027-02-07',s:[
-    {day:'LUN',date:'2027-02-01',text:'Facile 10km',type:'easy',km:10},
-    {day:'MAR',date:'2027-02-02',text:'3×10\' · 5:00/km',type:'quality',km:12},
+  {block:'Roma 2027',label:'Roma 12/17 — Specifico',start:'2027-02-01',end:'2027-02-07',s:[
+    {day:'LUN',date:'2027-02-01',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2027-02-02',text:'6×1000m · 4:40/km',type:'quality',km:12,n:'rec. 2\' · gambe pesanti dopo il 35? spostala a giovedì'},
     {day:'MER',date:'2027-02-03',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2027-02-04',text:'Facile 8km + 4×100m',type:'easy',km:8},
-    {day:'VEN',date:'2027-02-05',text:'Riposo',type:'rest',km:0},
-    {day:'SAB',date:'2027-02-06',text:'Riposo',type:'rest',km:0},
-    {day:'DOM',date:'2027-02-07',text:'🏁 MEZZA TEST — sub 1:45',type:'race',km:21.1},
+    {day:'GIO',date:'2027-02-04',text:'Medio 13km · 5:35–5:50/km',type:'medium',km:13},
+    {day:'GIO',date:'2027-02-04',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 3×6 pesante · bulgaro, stacco rumeno, step-down, hip thrust, soleo'},
+    {day:'VEN',date:'2027-02-05',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2027-02-06',text:'Facile 7km',type:'easy',km:7},
+    {day:'DOM',date:'2027-02-07',text:'Lungo 28km · 3×5km a RM',type:'long',km:28,n:'traccia 05: 9 giri, mezzo giro di recupero · gel 60–75 g/ora'},
   ]},
-  {block:'Roma 2027',label:'Sett. 25 — Lungo 32',start:'2027-02-08',end:'2027-02-14',s:[
-    {day:'LUN',date:'2027-02-08',text:'Facile 10km · post test',type:'easy',km:10},
-    {day:'MAR',date:'2027-02-09',text:'4×2000m · 5:05/km',type:'quality',km:14},
-    {day:'MER',date:'2027-02-10',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2027-02-11',text:'Medio 16km · 5:20/km',type:'medium',km:16},
-    {day:'VEN',date:'2027-02-12',text:'Palestra',type:'gym',km:0},
-    {day:'SAB',date:'2027-02-13',text:'🏔️ Lungo 32km · 5:25/km',type:'medium',km:32},
-    {day:'DOM',date:'2027-02-14',text:'Riposo',type:'rest',km:0},
+  {block:'Roma 2027',label:'Roma 13/17 — Mezza test',start:'2027-02-08',end:'2027-02-14',s:[
+    {day:'LUN',date:'2027-02-08',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2027-02-09',text:'3×2km a 4:55/km',type:'quality',km:10,n:'rec. 2\' · 10km totali'},
+    {day:'MER',date:'2027-02-10',text:'Tennis · senza strafare',type:'tennis',km:0},
+    {day:'GIO',date:'2027-02-11',text:'Facile 8km + 4 allunghi',type:'easy',km:8},
+    {day:'GIO',date:'2027-02-11',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe leggere: domenica c\'è la mezza'},
+    {day:'VEN',date:'2027-02-12',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2027-02-13',text:'Facile 4km + 4 allunghi',type:'easy',km:4},
+    {day:'DOM',date:'2027-02-14',text:'🏁 MEZZA FREGENE — 1:44',type:'race',km:21.1,n:'3km di riscaldamento · km 1 a 5:05 poi 4:55 · 🚦 SEMAFORO 3'},
   ]},
-  {block:'Roma 2027',label:'Sett. 26 — PEAK 36',start:'2027-02-15',end:'2027-02-21',s:[
-    {day:'LUN',date:'2027-02-15',text:'Facile 10km',type:'easy',km:10},
-    {day:'MAR',date:'2027-02-16',text:'5×2000m · 5:05/km',type:'quality',km:14},
+  {block:'Roma 2027',label:'Roma 14/17 — Lungo 32',start:'2027-02-15',end:'2027-02-21',s:[
+    {day:'LUN',date:'2027-02-15',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2027-02-16',text:'Facile 8km · recupero mezza',type:'easy',km:8,n:'niente qualità dopo la gara'},
     {day:'MER',date:'2027-02-17',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2027-02-18',text:'Medio 20km · 5:20/km',type:'medium',km:20},
-    {day:'VEN',date:'2027-02-19',text:'Riposo',type:'rest',km:0},
-    {day:'SAB',date:'2027-02-20',text:'🏔️ Lungo 36km · 5:20/km ← PEAK',type:'medium',km:36},
-    {day:'DOM',date:'2027-02-21',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2027-02-18',text:'14km con 8 a RM',type:'quality',km:14,n:'RM 5:10–5:15/km'},
+    {day:'GIO',date:'2027-02-18',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 2×6 mantenimento'},
+    {day:'VEN',date:'2027-02-19',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2027-02-20',text:'Facile 7km',type:'easy',km:7},
+    {day:'DOM',date:'2027-02-21',text:'🏔️ Lungo 32km · ultimi 8 a RM',type:'long',km:32,n:'traccia 02 + ciclabile 07 (4+4 a RM) · 28 lento se gambe pesanti'},
   ]},
-  {block:'Roma 2027',label:'Sett. 27 — Scarico',start:'2027-02-22',end:'2027-02-28',s:[
-    {day:'LUN',date:'2027-02-22',text:'Facile 10km · post 36',type:'easy',km:10},
-    {day:'MAR',date:'2027-02-23',text:'3×2000m · 5:05/km',type:'quality',km:12},
+  {block:'Roma 2027',label:'Roma 15/17 — Scarico 1',start:'2027-02-22',end:'2027-02-28',s:[
+    {day:'LUN',date:'2027-02-22',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2027-02-23',text:'3×3km · 5:00–5:05/km',type:'quality',km:13,n:'rec. 3\' · 13km totali'},
     {day:'MER',date:'2027-02-24',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2027-02-25',text:'Medio 14km',type:'medium',km:14},
-    {day:'VEN',date:'2027-02-26',text:'Palestra leggera',type:'gym',km:0},
-    {day:'SAB',date:'2027-02-27',text:'Lungo 20km · 5:20/km',type:'medium',km:20},
-    {day:'DOM',date:'2027-02-28',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2027-02-25',text:'Facile 12km',type:'easy',km:12},
+    {day:'GIO',date:'2027-02-25',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 2×6 mantenimento'},
+    {day:'VEN',date:'2027-02-26',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2027-02-27',text:'Facile 6km',type:'easy',km:6},
+    {day:'DOM',date:'2027-02-28',text:'Lungo 24km · 12 a RM',type:'long',km:24,n:'traccia 05: 7 giri, 6 a RM · prova generale: colazione, gel, scarpe'},
   ]},
-  {block:'Roma 2027',label:'Sett. 28 — Taper 1',start:'2027-03-01',end:'2027-03-07',s:[
-    {day:'LUN',date:'2027-03-01',text:'Facile 8km',type:'easy',km:8},
-    {day:'MAR',date:'2027-03-02',text:'3×10\' ritmo gara · 5:12/km',type:'quality',km:10},
+  {block:'Roma 2027',label:'Roma 16/17 — Scarico 2',start:'2027-03-01',end:'2027-03-07',s:[
+    {day:'LUN',date:'2027-03-01',text:'Palestra · parte alta',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2027-03-02',text:'6km a RM · 5:10–5:15/km',type:'quality',km:11,n:'11km totali'},
     {day:'MER',date:'2027-03-03',text:'Tennis',type:'tennis',km:0},
-    {day:'GIO',date:'2027-03-04',text:'Facile 8km',type:'easy',km:8},
-    {day:'VEN',date:'2027-03-05',text:'Riposo',type:'rest',km:0},
-    {day:'SAB',date:'2027-03-06',text:'Medio 14km · 5:12/km',type:'medium',km:14},
-    {day:'DOM',date:'2027-03-07',text:'Riposo',type:'rest',km:0},
+    {day:'GIO',date:'2027-03-04',text:'Facile 9km',type:'easy',km:9},
+    {day:'GIO',date:'2027-03-04',text:'Palestra · Push + forza gambe',type:'gym',km:0,n:'Gambe 1–2 serie leggere · ultima volta prima di Roma'},
+    {day:'VEN',date:'2027-03-05',text:'Riposo totale',type:'rest',km:0},
+    {day:'SAB',date:'2027-03-06',text:'Facile 5km',type:'easy',km:5},
+    {day:'DOM',date:'2027-03-07',text:'Lungo 16km · ultimi 3 a RM',type:'long',km:16,n:'traccia 01 corta + ciclabile 07'},
   ]},
-  {block:'Roma 2027',label:'Sett. 29 — ROMA',start:'2027-03-08',end:'2027-03-14',s:[
-    {day:'LUN',date:'2027-03-08',text:'Facile 6km',type:'easy',km:6},
-    {day:'MAR',date:'2027-03-09',text:'Facile 6km + 4×100m',type:'easy',km:6},
-    {day:'MER',date:'2027-03-10',text:'Tennis leggero',type:'tennis',km:0},
-    {day:'GIO',date:'2027-03-11',text:'Facile 5km sciolto',type:'easy',km:5},
-    {day:'VEN',date:'2027-03-12',text:'Riposo',type:'rest',km:0},
-    {day:'SAB',date:'2027-03-13',text:'Riposo · riso o patate',type:'rest',km:0},
-    {day:'DOM',date:'2027-03-14',text:'🏁 MARATONA DI ROMA — sub 3:40',type:'race',km:42.2},
+  {block:'Roma 2027',label:'Roma 17/17 — ROMA',start:'2027-03-08',end:'2027-03-14',s:[
+    {day:'LUN',date:'2027-03-08',text:'Palestra · parte alta leggera',type:'gym',km:0,n:'Pull + spalle, zero gambe · scheda preventiva A + B'},
+    {day:'MAR',date:'2027-03-09',text:'3×1km a RM',type:'quality',km:8,n:'8km totali · solo per tenere il ritmo nelle gambe'},
+    {day:'MER',date:'2027-03-10',text:'Tennis · salta o solo palleggio',type:'tennis',km:0,n:'ultimo bicchiere entro stasera'},
+    {day:'GIO',date:'2027-03-11',text:'Facile 6km + 4 allunghi',type:'easy',km:6},
+    {day:'VEN',date:'2027-03-12',text:'Riposo totale',type:'rest',km:0,n:'carico carboidrati: 640–800 g'},
+    {day:'SAB',date:'2027-03-13',text:'Sgambata 3km + 3 allunghi',type:'easy',km:3,n:'carico: pasta al pomodoro a pranzo, riso a cena'},
+    {day:'DOM',date:'2027-03-14',text:'🏁 MARATONA DI ROMA — sub 3:40',type:'race',km:42.2,n:'km 1 a 5:20–5:25 · poi 5:10–5:11 · gel ogni 25\' dal km 5'},
   ]},
 ];
 
-const BLBL={easy:'Facile',quality:'Qualità',medium:'Medio',rest:'Riposo',tennis:'Tennis',gym:'Palestra',race:'GARA'};
+const BLBL={easy:'Facile',quality:'Qualità',medium:'Medio',long:'Lungo',rest:'Riposo',tennis:'Tennis',gym:'Palestra',race:'GARA'};
 const BPILL={'Maratona Nov':'bp-mar','Recupero':'bp-10k','Roma 2027':'bp-mezza'};
 const BICON={'Maratona Nov':'💪','Recupero':'🌱','Roma 2027':'🏛️'};
 
@@ -870,6 +980,7 @@ function resetWeekEdits(week){
 // Regole fisse, scritte in codice: non dipendono da nessun modello.
 function isHard(s){
   if(s.type==='quality'||s.type==='race') return true;
+  if(s.type==='long' && (s.km||0)>=16) return true;
   if((s.type==='medium'||s.type==='easy') && (s.km||0)>=16) return true;
   return false;
 }
@@ -1021,6 +1132,12 @@ function renderWeek(){
     const txt=document.createElement('div');
     txt.className='s-text';
     txt.textContent=s.text;
+    if(s.n){
+      const nt=document.createElement('div');
+      nt.className='s-note';
+      nt.textContent=s.n;
+      txt.appendChild(nt);
+    }
     const act=matchActivity(s);
     if(act){
       usedIds[act.id]=1;
@@ -1188,12 +1305,46 @@ function renderRaces(){
     meta.innerHTML=`<div class="r-name">${r.name}</div><div class="r-date">${rd.toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'})}</div>`;
     const badge=document.createElement('div');
     badge.className='r-badge '+(isNext?'r-next':isDone?'r-done':'r-fut');
-    badge.textContent=r.badge;
+    badge.textContent=(isDone&&r.res)?r.res:r.badge;
     row.appendChild(em);row.appendChild(meta);row.appendChild(badge);
     c.appendChild(row);
   });
 }
 renderRaces();
+
+// Semafori: tre verifiche verso Roma. L'esito si segna a mano e resta salvato.
+const LIGHT_KEY='velocci_lights_v1';
+let LSTATE={};
+try{ const raw=localStorage.getItem(LIGHT_KEY); LSTATE=raw?JSON.parse(raw):{}; }catch(e){ LSTATE={}; }
+function renderLights(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const c=document.getElementById('light-list');
+  c.innerHTML='';
+  const order=['','g','y','r'];
+  LIGHTS.forEach(l=>{
+    const d=toDate(l.date);
+    const row=document.createElement('div');
+    row.className='light-row'+(d<today?' past':'');
+    const dot=document.createElement('div');
+    dot.className='light-dot '+(LSTATE[l.id]||'');
+    const meta=document.createElement('div');meta.className='r-meta';
+    const nm=document.createElement('div');nm.className='r-name';nm.textContent=l.name;
+    const dt=document.createElement('div');dt.className='r-date';
+    dt.textContent=d.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    const ok=document.createElement('div');ok.className='light-ok';ok.textContent=l.ok;
+    meta.appendChild(nm);meta.appendChild(dt);meta.appendChild(ok);
+    row.appendChild(dot);row.appendChild(meta);
+    row.addEventListener('click',()=>{
+      const i=order.indexOf(LSTATE[l.id]||'');
+      const nx=order[(i+1)%order.length];
+      if(nx) LSTATE[l.id]=nx; else delete LSTATE[l.id];
+      try{ localStorage.setItem(LIGHT_KEY,JSON.stringify(LSTATE)); }catch(e){}
+      renderLights();
+    });
+    c.appendChild(row);
+  });
+}
+renderLights();
 
 // ══════════════════════════════════════════════════════
 //  STRAVA
