@@ -317,14 +317,6 @@
     }
 
     /* ── PALESTRA ── */
-    .gy-top { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
-    .gy-letters { display:flex; gap:6px; }
-    .gy-let { width:34px; height:34px; border-radius:8px; border:2px solid var(--purple); background:transparent; color:var(--purple); font-family:'Bebas Neue',sans-serif; font-size:1.1rem; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-    .gy-let.on { background:var(--purple); color:#fff; }
-    .gy-title { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; letter-spacing:0.08em; color:var(--purple); text-align:right; line-height:1.1; }
-    .gy-modes { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px; }
-    .gy-mode { border:1.5px solid var(--border); background:var(--cream); color:var(--muted); border-radius:8px; padding:8px 4px; font-family:'Bebas Neue',sans-serif; font-size:0.8rem; letter-spacing:0.08em; cursor:pointer; -webkit-tap-highlight-color:transparent; line-height:1.15; }
-    .gy-mode.on { border-color:var(--purple); color:var(--purple); background:rgba(92,58,138,0.08); }
     .gy-info { font-family:'Space Mono',monospace; font-size:0.58rem; color:var(--muted); line-height:1.5; margin-bottom:6px; }
     .gy-info.warn { color:var(--gold); }
     .gy-sec { font-family:'Bebas Neue',sans-serif; font-size:0.8rem; letter-spacing:0.14em; color:var(--muted); margin:12px 0 2px; }
@@ -342,6 +334,16 @@
     .gy-ok.on { background:var(--green); border-color:var(--green); color:#fff; }
     .gy-done { display:block; width:100%; margin-top:14px; padding:12px; background:var(--purple); color:#fff; border:none; border-radius:10px; font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.1em; cursor:pointer; -webkit-tap-highlight-color:transparent; }
     .gy-done:active { opacity:0.8; }
+    .gy-pick { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin:10px 0 6px; }
+    .gy-card { text-align:left; border:1.5px solid var(--border); background:var(--cream); border-radius:10px; padding:8px 8px 9px; cursor:pointer; -webkit-tap-highlight-color:transparent; font-family:inherit; color:var(--ink); }
+    .gy-card.on { border:2px solid var(--purple); background:rgba(92,58,138,0.08); }
+    .gy-card.done .gy-cs { color:var(--green); }
+    .gy-cl { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; line-height:1; color:var(--purple); }
+    .gy-ct { font-size:0.66rem; font-weight:600; line-height:1.25; margin-top:2px; min-height:2.5em; }
+    .gy-cs { font-family:'Space Mono',monospace; font-size:0.5rem; color:var(--muted); margin-top:4px; line-height:1.35; }
+    .gy-legst { font-family:'Space Mono',monospace; font-size:0.5rem; margin-top:3px; line-height:1.3; }
+    .gy-legst.ok { color:var(--green); } .gy-legst.warn { color:var(--gold); } .gy-legst.no { color:var(--red); }
+    .gy-done.undo { background:transparent; color:var(--purple); border:1.5px solid var(--purple); }
   </style>
 </head>
 <body>
@@ -482,7 +484,7 @@
 // ── AGGIORNAMENTO ─────────────────────────────────────
 // Ogni nuova versione del file cambia APP_VERSION. Il pulsante scarica la pagina
 // senza cache, confronta la versione e ricarica. Le spunte restano: sono salvate a parte.
-const APP_VERSION='2026-11-24.1';
+const APP_VERSION='2026-11-24.2';
 (function(){
   const p=new URLSearchParams(location.search);
   if(p.has('v') && !p.has('code')) history.replaceState({},'',location.pathname);
@@ -546,9 +548,9 @@ const RULES = [
     'Serata pesante: nessuna compensazione, il giorno dopo normale',
   ]},
   { icon:'🦵', title:'FORZA & PREVENZIONE', cls:'rc-gold', items:[
-    'Schede A → B → C a rotazione: ogni seduta la successiva, la card Palestra tiene il conto',
-    'Martedì sera, dopo la qualità: blocco gambe fisso + primi 3 esercizi della scheda',
-    'Mai forza gambe il lunedì, né il giorno prima di lungo o qualità',
+    'Tre schede complete: A schiena e braccia, B gambe e spinta, C petto spalle e core. Scegli tu',
+    '2 volte a settimana: A o C + B. 3 volte: tutte e tre. La card Palestra ricorda cosa hai fatto',
+    'B (gambe) mai il giorno prima di qualità o lungo, né due giorni prima del lungo: di solito martedì sera',
     'Aumenta il carico quando chiudi tutte le serie in cima al range con 2 ripetizioni in riserva',
     'Settimane di scarico (21/12, 18/1, 8/2, 1/3, 8/3): mai aumentare',
     'Scheda preventiva: blocco A lun, mer, ven · blocco B lun e gio',
@@ -720,9 +722,9 @@ const W = [
     {day:'DOM',date:'2026-11-29',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 3/17 — Base',start:'2026-11-30',end:'2026-12-06',s:[
-    {day:'LUN',date:'2026-11-30',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2026-11-30',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2026-12-01',text:'Facile 8km + 6 allunghi',type:'easy',km:8,n:'allunghi: 20" in progressione, recupero completo'},
-    {day:'MAR',date:'2026-12-01',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 4×8 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2026-12-01',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 4×8 + spinta · card Palestra'},
     {day:'MER',date:'2026-12-02',text:'Facile 9km',type:'easy',km:9},
     {day:'MER',date:'2026-12-02',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2026-12-03',text:'Riposo totale',type:'rest',km:0},
@@ -731,9 +733,9 @@ const W = [
     {day:'DOM',date:'2026-12-06',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 4/17 — Base',start:'2026-12-07',end:'2026-12-13',s:[
-    {day:'LUN',date:'2026-12-07',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2026-12-07',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2026-12-08',text:'6×1\' brillante / 1\' lento',type:'quality',km:10,n:'10km totali con riscaldamento e defaticamento'},
-    {day:'MAR',date:'2026-12-08',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 4×8 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2026-12-08',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 4×8 + spinta · card Palestra'},
     {day:'MER',date:'2026-12-09',text:'Facile 10km',type:'easy',km:10},
     {day:'MER',date:'2026-12-09',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2026-12-10',text:'Riposo totale',type:'rest',km:0},
@@ -742,9 +744,9 @@ const W = [
     {day:'DOM',date:'2026-12-13',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 5/17 — Semaforo 1',start:'2026-12-14',end:'2026-12-20',s:[
-    {day:'LUN',date:'2026-12-14',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2026-12-14',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2026-12-15',text:'Soglia 4×5\' · 4:55–5:00/km',type:'quality',km:11,n:'rec. 90" · 11km totali'},
-    {day:'MAR',date:'2026-12-15',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 4×6 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2026-12-15',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 4×6 + spinta · card Palestra'},
     {day:'MER',date:'2026-12-16',text:'Facile 11km',type:'easy',km:11},
     {day:'MER',date:'2026-12-16',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2026-12-17',text:'Riposo totale',type:'rest',km:0},
@@ -753,9 +755,9 @@ const W = [
     {day:'DOM',date:'2026-12-20',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 6/17 — Scarico feste',start:'2026-12-21',end:'2026-12-27',s:[
-    {day:'LUN',date:'2026-12-21',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2026-12-21',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2026-12-22',text:'5×3\' a 4:45/km',type:'quality',km:10,n:'rec. 2\' · 10km totali'},
-    {day:'MAR',date:'2026-12-22',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 3×6 −10% + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2026-12-22',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 3×6 −10% + spinta · card Palestra'},
     {day:'MER',date:'2026-12-23',text:'Facile 8km',type:'easy',km:8},
     {day:'MER',date:'2026-12-23',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2026-12-24',text:'Riposo totale',type:'rest',km:0},
@@ -764,9 +766,9 @@ const W = [
     {day:'DOM',date:'2026-12-27',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 7/17 — Costruzione',start:'2026-12-28',end:'2027-01-03',s:[
-    {day:'LUN',date:'2026-12-28',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2026-12-28',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2026-12-29',text:'Soglia 3×8\' · 4:55–5:00/km',type:'quality',km:12,n:'rec. 2\' · 12km totali'},
-    {day:'MAR',date:'2026-12-29',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 4×4-6 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2026-12-29',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 4×4-6 + spinta · card Palestra'},
     {day:'MER',date:'2026-12-30',text:'Medio 12km · 5:35–5:50/km',type:'medium',km:12,n:'tennis la sera: se le gambe sono pesanti, corri facile'},
     {day:'MER',date:'2026-12-30',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2026-12-31',text:'Riposo totale',type:'rest',km:0},
@@ -775,9 +777,9 @@ const W = [
     {day:'DOM',date:'2027-01-03',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 8/17 — Costruzione',start:'2027-01-04',end:'2027-01-10',s:[
-    {day:'LUN',date:'2027-01-04',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2027-01-04',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2027-01-05',text:'5×1000m · 4:40–4:45/km',type:'quality',km:12,n:'rec. 2\'30" · 12km totali'},
-    {day:'MAR',date:'2027-01-05',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 4×4-6 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2027-01-05',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 4×4-6 + spinta · card Palestra'},
     {day:'MER',date:'2027-01-06',text:'Medio 13km · 5:35–5:50/km',type:'medium',km:13,n:'tennis la sera: se le gambe sono pesanti, corri facile'},
     {day:'MER',date:'2027-01-06',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2027-01-07',text:'Riposo totale',type:'rest',km:0},
@@ -786,9 +788,9 @@ const W = [
     {day:'DOM',date:'2027-01-10',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 9/17 — Semaforo 2',start:'2027-01-11',end:'2027-01-17',s:[
-    {day:'LUN',date:'2027-01-11',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2027-01-11',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2027-01-12',text:'Soglia 2×15\' · 5:00/km o meglio',type:'quality',km:13,n:'rec. 3\' · 🚦 SEMAFORO 2: seconda ripetuta non più lenta della prima'},
-    {day:'MAR',date:'2027-01-12',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 4×4-6 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2027-01-12',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 4×4-6 + spinta · card Palestra'},
     {day:'MER',date:'2027-01-13',text:'Medio 14km · 5:35–5:50/km',type:'medium',km:14,n:'tennis la sera: se le gambe sono pesanti, corri facile'},
     {day:'MER',date:'2027-01-13',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2027-01-14',text:'Riposo totale',type:'rest',km:0},
@@ -797,9 +799,9 @@ const W = [
     {day:'DOM',date:'2027-01-17',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 10/17 — Scarico',start:'2027-01-18',end:'2027-01-24',s:[
-    {day:'LUN',date:'2027-01-18',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2027-01-18',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2027-01-19',text:'8×1\' brillante / 1\' lento',type:'quality',km:10,n:'10km totali'},
-    {day:'MAR',date:'2027-01-19',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 3×5 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2027-01-19',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 3×5 + spinta · card Palestra'},
     {day:'MER',date:'2027-01-20',text:'Facile 10km',type:'easy',km:10},
     {day:'MER',date:'2027-01-20',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2027-01-21',text:'Riposo totale',type:'rest',km:0},
@@ -808,9 +810,9 @@ const W = [
     {day:'DOM',date:'2027-01-24',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 11/17 — Lungo 35',start:'2027-01-25',end:'2027-01-31',s:[
-    {day:'LUN',date:'2027-01-25',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2027-01-25',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2027-01-26',text:'10km continui a RM · 5:10–5:15/km',type:'quality',km:14,n:'14km totali'},
-    {day:'MAR',date:'2027-01-26',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 4×4-6 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2027-01-26',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 4×4-6 + spinta · card Palestra'},
     {day:'MER',date:'2027-01-27',text:'Medio 14km · 5:35–5:50/km',type:'medium',km:14,n:'tennis la sera: se le gambe sono pesanti, corri facile'},
     {day:'MER',date:'2027-01-27',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2027-01-28',text:'Riposo totale',type:'rest',km:0},
@@ -819,9 +821,9 @@ const W = [
     {day:'DOM',date:'2027-01-31',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 12/17 — Specifico',start:'2027-02-01',end:'2027-02-07',s:[
-    {day:'LUN',date:'2027-02-01',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2027-02-01',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2027-02-02',text:'6×1000m · 4:40/km',type:'quality',km:12,n:'rec. 2\' · gambe pesanti dopo il 35? spostala a giovedì'},
-    {day:'MAR',date:'2027-02-02',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 4×4-6 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2027-02-02',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 4×4-6 + spinta · card Palestra'},
     {day:'MER',date:'2027-02-03',text:'Medio 13km · 5:35–5:50/km',type:'medium',km:13,n:'tennis la sera: se le gambe sono pesanti, corri facile'},
     {day:'MER',date:'2027-02-03',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2027-02-04',text:'Riposo totale',type:'rest',km:0},
@@ -830,9 +832,9 @@ const W = [
     {day:'DOM',date:'2027-02-07',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 13/17 — Mezza test',start:'2027-02-08',end:'2027-02-14',s:[
-    {day:'LUN',date:'2027-02-08',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2027-02-08',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2027-02-09',text:'3×2km a 4:55/km',type:'quality',km:10,n:'rec. 2\' · 10km totali'},
-    {day:'MAR',date:'2027-02-09',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 2×5 leggere + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2027-02-09',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 2×5 leggere + spinta · card Palestra'},
     {day:'MER',date:'2027-02-10',text:'Facile 8km + 4 allunghi',type:'easy',km:8},
     {day:'MER',date:'2027-02-10',text:'Tennis · senza strafare',type:'tennis',km:0},
     {day:'GIO',date:'2027-02-11',text:'Riposo totale',type:'rest',km:0},
@@ -841,9 +843,9 @@ const W = [
     {day:'DOM',date:'2027-02-14',text:'🏁 MEZZA FREGENE — 1:44',type:'race',km:21.1,n:'3km di riscaldamento · km 1 a 5:05 poi 4:55 · 🚦 SEMAFORO 3'},
   ]},
   {block:'Roma 2027',label:'Roma 14/17 — Lungo 32',start:'2027-02-15',end:'2027-02-21',s:[
-    {day:'LUN',date:'2027-02-15',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2027-02-15',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2027-02-16',text:'Facile 8km · recupero mezza',type:'easy',km:8,n:'niente qualità dopo la gara'},
-    {day:'MAR',date:'2027-02-16',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 3×5 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2027-02-16',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 3×5 + spinta · card Palestra'},
     {day:'MER',date:'2027-02-17',text:'Facile 14km',type:'easy',km:14,n:'niente ritmo gara: la mezza è di 3 giorni fa'},
     {day:'MER',date:'2027-02-17',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2027-02-18',text:'Riposo totale',type:'rest',km:0},
@@ -852,9 +854,9 @@ const W = [
     {day:'DOM',date:'2027-02-21',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 15/17 — Scarico 1',start:'2027-02-22',end:'2027-02-28',s:[
-    {day:'LUN',date:'2027-02-22',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2027-02-22',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2027-02-23',text:'3×3km · 5:00–5:05/km',type:'quality',km:13,n:'rec. 3\' · 13km totali'},
-    {day:'MAR',date:'2027-02-23',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 3×5 + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2027-02-23',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 3×5 + spinta · card Palestra'},
     {day:'MER',date:'2027-02-24',text:'Facile 12km',type:'easy',km:12},
     {day:'MER',date:'2027-02-24',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2027-02-25',text:'Riposo totale',type:'rest',km:0},
@@ -863,9 +865,9 @@ const W = [
     {day:'DOM',date:'2027-02-28',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 16/17 — Scarico 2',start:'2027-03-01',end:'2027-03-07',s:[
-    {day:'LUN',date:'2027-03-01',text:'Palestra · scheda della rotazione',type:'gym',km:0,n:'Scheda intera A/B/C · zero gambe · card Palestra'},
+    {day:'LUN',date:'2027-03-01',text:'Palestra · scheda A o C',type:'gym',km:0,n:'Parte alta, zero gambe · card Palestra'},
     {day:'MAR',date:'2027-03-02',text:'6km a RM · 5:10–5:15/km',type:'quality',km:11,n:'11km totali'},
-    {day:'MAR',date:'2027-03-02',text:'Palestra sera · gambe + scheda',type:'gym',km:0,n:'Gambe 2×5 al 70% + primi 3 della scheda · card Palestra'},
+    {day:'MAR',date:'2027-03-02',text:'Palestra sera · scheda B',type:'gym',km:0,n:'Gambe 2×5 al 70% + spinta · card Palestra'},
     {day:'MER',date:'2027-03-03',text:'Facile 9km',type:'easy',km:9},
     {day:'MER',date:'2027-03-03',text:'Tennis',type:'tennis',km:0},
     {day:'GIO',date:'2027-03-04',text:'Riposo totale',type:'rest',km:0},
@@ -874,7 +876,7 @@ const W = [
     {day:'DOM',date:'2027-03-07',text:'Riposo totale',type:'rest',km:0},
   ]},
   {block:'Roma 2027',label:'Roma 17/17 — ROMA',start:'2027-03-08',end:'2027-03-14',s:[
-    {day:'LUN',date:'2027-03-08',text:'Palestra · scheda leggera',type:'gym',km:0,n:'Scheda della rotazione, 2 serie leggere · niente gambe'},
+    {day:'LUN',date:'2027-03-08',text:'Palestra · A o C leggera',type:'gym',km:0,n:'2 serie per esercizio · niente gambe'},
     {day:'MAR',date:'2027-03-09',text:'3×1km a RM',type:'quality',km:8,n:'8km totali · solo per tenere il ritmo nelle gambe'},
     {day:'MER',date:'2027-03-10',text:'Facile 6km + 4 allunghi',type:'easy',km:6},
     {day:'MER',date:'2027-03-10',text:'Tennis · salta o solo palleggio',type:'tennis',km:0,n:'ultimo bicchiere entro stasera'},
@@ -1400,112 +1402,135 @@ function renderLights(){
 }
 renderLights();
 
-// ── PALESTRA: schede A/B/C a rotazione + blocco gambe del martedì ──
-// Un numero per esercizio (ultimo carico) e una spunta: "chiuso il range con 2 in riserva".
-// Se l'ultima volta era chiuso e non è settimana di scarico, propone il carico successivo.
+// ── PALESTRA: tre schede complete, scegli tu quale fare ──
+// A e C = parte alta, qualsiasi giorno. B = gambe + spinta, solo quando le gambe non danno fastidio
+// alla corsa (mai il giorno prima di qualità o lungo). L'app ricorda cosa hai fatto in settimana.
 const GYM_KEY='velocci_gym_v1';
-const GYM_LEGS=[
-  {id:'lp',n:'Leg press monolaterale',k:60,st:5,u:'kg/gamba',alt:'occupata: split squat bulgaro manubri'},
-  {id:'ht',n:'Hip thrust machine',k:85,st:5,alt:'occupata: glute machine 3 × 10 per lato'},
-  {id:'lc',n:'Leg curl (sdraiato o seduto)',sr:'3 × 8-10',k:null,st:2.5,alt:'occupata: stacco rumeno manubri'},
-  {id:'hr',n:'Heel raise su gradino, una gamba, discesa 3"',sr:'3 × 10 per lato',k:0,st:0,alt:'0 = corpo libero · dopo 3 settimane senza fastidi alle tibie: manubrio 5 kg'},
-];
 const GYM_SCHEDE={
-  A:{t:'Tirata verticale',ex:[
+  A:{t:'Schiena e braccia',min:50,legs:false,ex:[
     {id:'latL',n:'Lat machine presa larga',sr:'4 × 8-10',k:60,st:2.5},
-    {id:'vcp',n:'Vertical chest press',sr:'3 × 8-10',k:null,st:2.5},
+    {id:'vog',n:'Vogatore a tiraggio centrale',sr:'4 × 8-10',k:null,st:2.5},
     {id:'delt',n:'Deltoid machine',sr:'4 × 12-15',k:40,st:2.5,alt:'meglio 1 ripetizione in più che 1 kg in più'},
+    {id:'rfly',n:'Butterfly al contrario (deltoide posteriore)',sr:'3 × 15',k:null,st:2.5},
     {id:'curl',n:'Curl manubri su panca inclinata',sr:'3 × 10-12',k:10,st:1,u:'kg/lato'},
     {id:'bext',n:'Back extension (panca 45°)',sr:'3 × 12',k:10,st:2.5},
     {id:'abd',n:'Abdominal machine',sr:'3 × 12-15',k:null,st:2.5},
   ]},
-  B:{t:'Tirata orizzontale',ex:[
-    {id:'vog',n:'Vogatore a tiraggio centrale',sr:'4 × 8-10',k:null,st:2.5},
-    {id:'pinc',n:'Panca inclinata manubri',sr:'4 × 8-10',k:15,st:1,u:'kg/lato'},
+  B:{t:'Gambe e spinta',min:60,legs:true,ex:[
+    {id:'lp',n:'Leg press monolaterale',leg:true,k:60,st:5,u:'kg/gamba',alt:'occupata: split squat bulgaro manubri'},
+    {id:'ht',n:'Hip thrust machine',leg:true,k:85,st:5,alt:'occupata: glute machine 3 × 10 per lato'},
+    {id:'lc',n:'Leg curl (sdraiato o seduto)',sr:'3 × 8-10',k:null,st:2.5,alt:'occupata: stacco rumeno manubri'},
+    {id:'hr',n:'Heel raise su gradino, una gamba, discesa 3"',sr:'3 × 10 per lato',k:0,st:0,alt:'0 = corpo libero · dopo 3 settimane senza fastidi alle tibie: manubrio 5 kg'},
+    {id:'pinc',n:'Panca inclinata manubri',sr:'3 × 8-10',k:15,st:1,u:'kg/lato'},
     {id:'shp',n:'Shoulder press machine',sr:'3 × 8-10',k:null,st:2.5},
-    {id:'rfly',n:'Butterfly al contrario (deltoide posteriore)',sr:'3 × 15',k:null,st:2.5},
-    {id:'trot',n:'Torso rotation machine',sr:'3 × 12 per lato',k:null,st:2.5,alt:'leggero e lento'},
     {id:'push',n:'Pushdown tricipiti al cavo',sr:'3 × 12',k:null,st:2.5},
   ]},
-  C:{t:'Rematore e spalle',ex:[
+  C:{t:'Petto, spalle e core',min:50,legs:false,ex:[
+    {id:'vcp',n:'Vertical chest press',sr:'4 × 8-10',k:null,st:2.5},
     {id:'row',n:'Rematore (machine row)',sr:'4 × 8-10',k:null,st:2.5},
-    {id:'bfly',n:'Butterfly machine',sr:'3 × 10-12',k:null,st:2.5},
     {id:'delt',n:'Deltoid machine',sr:'4 × 12-15',k:40,st:2.5,alt:'meglio 1 ripetizione in più che 1 kg in più'},
-    {id:'latS',n:'Lat machine presa stretta',sr:'3 × 10',k:50,st:2.5},
+    {id:'bfly',n:'Butterfly machine',sr:'3 × 10-12',k:null,st:2.5},
     {id:'sideb',n:'Sollevamento laterale del tronco',sr:'3 × 12 per lato',k:20,st:2},
-    {id:'pallof',n:'Pallof press al cavo',sr:'3 × 10 per lato',k:null,st:2.5},
+    {id:'trot',n:'Torso rotation machine',sr:'3 × 12 per lato',k:null,st:2.5,alt:'leggero e lento'},
   ]},
 };
-// Fasi del blocco gambe (ogni fase vale fino alla data "to" compresa)
+// Fasi: serie×ripetute di leg press e hip thrust, e settimane di scarico (fase valida fino a "to")
 const GYM_PHASES=[
   {to:'2026-12-13',leg:'4 × 8',info:'Adattamento: 3 ripetizioni in riserva, trovi i carichi'},
   {to:'2026-12-20',leg:'4 × 6',info:'Primo blocco pesante: 2 in riserva'},
   {to:'2026-12-27',leg:'3 × 6',deload:true,info:'Scarico di Natale: gambe −10%'},
   {to:'2027-01-17',leg:'4 × 4-6',info:'Forza massima: 2 in riserva'},
-  {to:'2027-01-24',leg:'3 × 5',deload:true,info:'Scarico della corsa: parte alta una serie in meno'},
+  {to:'2027-01-24',leg:'3 × 5',deload:true,info:'Scarico della corsa: una serie in meno su tutto'},
   {to:'2027-02-07',leg:'4 × 4-6',info:'Picco dei lunghi'},
-  {to:'2027-02-14',leg:'2 × 5 leggere',deload:true,info:'Mezza di Fregene domenica: gambe solo martedì 9/2, leggere'},
+  {to:'2027-02-14',leg:'2 × 5 leggere',deload:true,info:'Mezza di Fregene domenica: gambe leggere'},
   {to:'2027-02-28',leg:'3 × 5',info:'Mantenimento: non perdere la forza fatta'},
-  {to:'2027-03-07',leg:'2 × 5 al 70%',deload:true,info:'Ultima seduta gambe · parte alta una serie in meno'},
-  {to:'2099-12-31',leg:null,deload:true,info:'Settimana della maratona: niente gambe, solo lunedì 2 serie leggere'},
+  {to:'2027-03-07',leg:'2 × 5 al 70%',deload:true,info:'Ultima settimana con le gambe · una serie in meno su tutto'},
+  {to:'2099-12-31',leg:null,deload:true,info:'Settimana della maratona: niente gambe, solo A o C con 2 serie leggere'},
 ];
-const GYM_NEXT={A:'B',B:'C',C:'A'};
-let G={next:'A',loads:{},draft:{},last:null};
-try{ const raw=localStorage.getItem(GYM_KEY); if(raw) G=Object.assign(G,JSON.parse(raw)); }catch(e){}
+let G={loads:{},draft:{},hist:[]};
+try{ const raw=localStorage.getItem(GYM_KEY); if(raw){ const o=JSON.parse(raw); G.loads=o.loads||{}; G.draft=o.draft||{}; G.hist=o.hist||[]; } }catch(e){}
 function gySave(){ try{ localStorage.setItem(GYM_KEY,JSON.stringify(G)); }catch(e){} }
-let gyMode=(new Date().getDay()===2)?'mar':'lun';
+let gySel=null;
 
 function gyIso(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
-function gyPhase(){ const t=gyIso(new Date()); return GYM_PHASES.find(p=>t<=p.to)||GYM_PHASES[GYM_PHASES.length-1]; }
+function gyAdd(iso,n){ const d=toDate(iso); d.setDate(d.getDate()+n); return gyIso(d); }
+function gyToday(){ return gyIso(new Date()); }
+function gyPhase(){ const t=gyToday(); return GYM_PHASES.find(p=>t<=p.to)||GYM_PHASES[GYM_PHASES.length-1]; }
 function gyFmt(n){ return (Math.round(n*10)/10).toLocaleString('it-IT'); }
 function gyEsc(t){ return String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
-// Carico proposto: ultimo carico, + passo se l'ultima volta il range era chiuso e non è scarico
-function gySuggest(ex,ph){
+function gyWeekStart(){ const d=new Date(); d.setHours(0,0,0,0); const k=(d.getDay()+6)%7; d.setDate(d.getDate()-k); return gyIso(d); }
+function gyDoneWeek(l){ const ws=gyWeekStart(); return G.hist.filter(h=>h.let===l && h.date>=ws).map(h=>h.date); }
+function gyLast(l){ const h=G.hist.filter(x=>x.let===l).map(x=>x.date).sort(); return h.length?h[h.length-1]:null; }
+function gySessOn(iso){ const out=[]; W.forEach(w=>w.s.forEach(x=>{ if(x.date===iso && !x.skip) out.push(x); })); return out; }
+const GY_HARD=x=>x.type==='quality'||x.type==='long'||x.type==='race';
+// Gambe oggi? ok / warn / no, con il motivo
+function gyLegs(){
+  const t=gyToday(), ph=gyPhase();
+  if(!ph.leg) return {st:'no',why:'settimana della maratona: niente gambe'};
+  const today=gySessOn(t), tom=gySessOn(gyAdd(t,1)), d2=gySessOn(gyAdd(t,2)), yes=gySessOn(gyAdd(t,-1));
+  const lng=x=>x.type==='long'||x.type==='race';
+  if(today.some(lng)) return {st:'no',why:'oggi c’è il lungo'};
+  const th=tom.find(GY_HARD);
+  if(th) return {st:'no',why:'domani '+(th.type==='quality'?'c’è la qualità':'c’è il lungo')};
+  if(toDate(gyAdd(t,1)).getDay()===2) return {st:'no',why:'domani è martedì, giorno della qualità'};
+  if(d2.some(lng)) return {st:'no',why:'dopodomani c’è il lungo'};
+  if(gyDoneWeek('B').some(d=>d!==t)) return {st:'warn',why:'gambe già fatte questa settimana'};
+  if(yes.some(lng)) return {st:'warn',why:'ieri il lungo: meglio aspettare'};
+  return {st:'ok',why:'oggi le gambe vanno bene'};
+}
+// Scheda consigliata oggi: B se le gambe sono ok e non fatte; altrimenti tra A e C quella fatta da più tempo
+function gySuggest(){
+  const lg=gyLegs();
+  if(lg.st==='ok' && !gyDoneWeek('B').length) return 'B';
+  const a=gyLast('A')||'', c=gyLast('C')||'';
+  const notA=!gyDoneWeek('A').length, notC=!gyDoneWeek('C').length;
+  if(notA && !notC) return 'A';
+  if(notC && !notA) return 'C';
+  return a<=c?'A':'C';
+}
+function gyLoad(ex,ph){
   const L=G.loads[ex.id];
   const base=(L && L.kg!=null)?L.kg:ex.k;
   if(base==null) return {kg:null,up:false};
   if(L && L.ok && ex.st>0 && !ph.deload) return {kg:base+ex.st,up:true,from:base};
   return {kg:base,up:false};
 }
-function gySession(ph){
-  const sch=GYM_SCHEDE[G.next];
-  const list=[];
-  if(gyMode==='mar'){
-    if(ph.leg) GYM_LEGS.forEach(e=>list.push(Object.assign({sec:'legs'},e,{sr:e.sr||ph.leg})));
-    sch.ex.slice(0,3).forEach(e=>list.push(Object.assign({sec:'up'},e)));
-  } else sch.ex.forEach(e=>list.push(Object.assign({sec:'up'},e)));
-  return list;
-}
 function renderGym(){
   const body=document.getElementById('gym-body'); if(!body) return;
-  const ph=gyPhase(), sch=GYM_SCHEDE[G.next], list=gySession(ph);
-  let h='<div class="gy-top"><div class="gy-letters">';
-  ['A','B','C'].forEach(l=>{ h+='<button class="gy-let'+(l===G.next?' on':'')+'" data-let="'+l+'">'+l+'</button>'; });
-  h+='</div><div class="gy-title">Scheda '+G.next+'<br>'+gyEsc(sch.t)+'</div></div>';
-  h+='<div class="gy-modes"><button class="gy-mode'+(gyMode==='lun'?' on':'')+'" data-mode="lun">Lunedì<br>scheda intera</button>'+
-     '<button class="gy-mode'+(gyMode==='mar'?' on':'')+'" data-mode="mar">Martedì<br>gambe + primi 3</button></div>';
-  h+='<div class="gy-info'+(ph.deload?' warn':'')+'">'+(ph.deload?'⚠ Settimana di scarico: non aumentare i carichi. ':'')+gyEsc(ph.info)+(ph.leg?' · gambe '+ph.leg:'')+'</div>';
-  if(G.last) h+='<div class="gy-info">Ultima seduta: '+fmtShort(G.last.date)+' · scheda '+G.last.let+(G.last.mode==='mar'?' + gambe':'')+'</div>';
-  let curSec='';
-  list.forEach((e,i)=>{
-    if(e.sec!==curSec){
-      curSec=e.sec;
-      h+='<div class="gy-sec">'+(e.sec==='legs'?'Blocco gambe':'Scheda '+G.next+(gyMode==='mar'?' · primi 3':''))+'</div>';
-    }
-    const sg=gySuggest(e,ph), d=G.draft[e.id]||{};
+  const ph=gyPhase(), lg=gyLegs(), sug=gySuggest(), t=gyToday();
+  if(!gySel) gySel=sug;
+  const sch=GYM_SCHEDE[gySel];
+  let h='<div class="gy-info'+(ph.deload?' warn':'')+'">'+(ph.deload?'⚠ Settimana di scarico: non aumentare i carichi. ':'')+gyEsc(ph.info)+'</div>';
+  h+='<div class="gy-info">Oggi consigliata: <b>scheda '+sug+'</b> · gambe: '+(lg.st==='ok'?'✓ ':lg.st==='warn'?'⚠ ':'✗ ')+gyEsc(lg.why)+'</div>';
+  h+='<div class="gy-pick">';
+  ['A','B','C'].forEach(l=>{
+    const S=GYM_SCHEDE[l], dw=gyDoneWeek(l), last=gyLast(l);
+    let stt=dw.length?'✓ fatta '+dw.map(fmtShort).join(', '):(last?'ultima '+fmtShort(last):'mai fatta');
+    let cls='gy-card'+(l===gySel?' on':'')+(dw.length?' done':'');
+    let leg='';
+    if(S.legs) leg='<div class="gy-legst '+lg.st+'">'+(lg.st==='ok'?'gambe ok oggi':lg.st==='warn'?'gambe: meglio di no':'gambe no oggi')+'</div>';
+    h+='<button class="'+cls+'" data-sel="'+l+'"><div class="gy-cl">'+l+'</div><div class="gy-ct">'+gyEsc(S.t)+'</div><div class="gy-cs">'+stt+'</div>'+leg+'</button>';
+  });
+  h+='</div>';
+  if(sch.legs && lg.st!=='ok') h+='<div class="gy-info warn">⚠ Scheda B oggi: '+gyEsc(lg.why)+'. Meglio A o C.</div>';
+  h+='<div class="gy-sec">Scheda '+gySel+' · '+gyEsc(sch.t)+' · ~'+sch.min+' min</div>';
+  sch.ex.forEach(e=>{
+    const sr=e.leg?(ph.leg||'—'):e.sr;
+    const sg=gyLoad(e,ph), d=G.draft[e.id]||{};
     const val=(d.kg!=null)?d.kg:sg.kg;
-    h+='<div class="gy-row"><div class="gy-meta"><div class="gy-name">'+gyEsc(e.n)+'</div><div class="gy-sr">'+gyEsc(e.sr)+(e.u?' · '+e.u:'')+'</div>';
+    h+='<div class="gy-row"><div class="gy-meta"><div class="gy-name">'+gyEsc(e.n)+'</div><div class="gy-sr">'+gyEsc(sr)+(e.u?' · '+e.u:'')+'</div>';
     if(sg.up) h+='<div class="gy-up">↑ +'+gyFmt(e.st)+' kg: l’ultima volta hai chiuso il range ('+gyFmt(sg.from)+')</div>';
     if(e.alt) h+='<div class="gy-alt">'+gyEsc(e.alt)+'</div>';
     h+='</div><input class="gy-kg'+(sg.up?' up':'')+'" type="number" inputmode="decimal" step="0.5" min="0" placeholder="kg" data-kg="'+e.id+'" value="'+(val==null?'':val)+'">';
     h+='<button class="gy-ok'+(d.ok?' on':'')+'" data-ok="'+e.id+'" title="chiuso il range con 2 in riserva">✓</button></div>';
   });
-  h+='<button class="gy-done" id="gy-done">✓ Fatta · poi scheda '+GYM_NEXT[G.next]+'</button>';
-  h+='<div class="edit-hint">✓ verde = tutte le serie in cima al range con 2 ripetizioni in riserva: la volta dopo l’app propone il carico successivo.'+(gyMode==='lun'?' Chiusura: clamshell + abduzione 2 × 15 per lato.':'')+' Le lettere A B C cambiano la scheda a mano.</div>';
+  const doneToday=G.hist.some(x=>x.let===gySel && x.date===t);
+  h+=doneToday?'<button class="gy-done undo" id="gy-undo">↶ Annulla "fatta oggi"</button>'
+              :'<button class="gy-done" id="gy-done">✓ Fatta oggi · scheda '+gySel+'</button>';
+  h+='<div class="edit-hint">2 volte a settimana: A o C + B (gambe). 3 volte: tutte e tre. ✓ verde su un esercizio = tutte le serie in cima al range con 2 ripetizioni in riserva: la volta dopo l’app propone il carico successivo.</div>';
   body.innerHTML=h;
 
-  body.querySelectorAll('[data-let]').forEach(b=>b.addEventListener('click',()=>{ G.next=b.dataset.let; G.draft={}; gySave(); renderGym(); }));
-  body.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{ gyMode=b.dataset.mode; renderGym(); }));
+  body.querySelectorAll('[data-sel]').forEach(b=>b.addEventListener('click',()=>{ gySel=b.dataset.sel; renderGym(); }));
   body.querySelectorAll('[data-kg]').forEach(inp=>inp.addEventListener('change',()=>{
     const id=inp.dataset.kg, v=parseFloat(String(inp.value).replace(',','.'));
     G.draft[id]=Object.assign({},G.draft[id],{kg:isNaN(v)?null:v}); gySave();
@@ -1514,21 +1539,25 @@ function renderGym(){
     const id=b.dataset.ok; const d=Object.assign({},G.draft[id]); d.ok=!d.ok; G.draft[id]=d; gySave();
     b.classList.toggle('on',d.ok);
   }));
-  document.getElementById('gy-done').addEventListener('click',()=>{
-    const today=gyIso(new Date());
-    // legge anche i valori digitati senza uscire dal campo
+  const done=document.getElementById('gy-done');
+  if(done) done.addEventListener('click',()=>{
     body.querySelectorAll('[data-kg]').forEach(inp=>{
       const v=parseFloat(String(inp.value).replace(',','.'));
       G.draft[inp.dataset.kg]=Object.assign({},G.draft[inp.dataset.kg],{kg:isNaN(v)?null:v});
     });
-    list.forEach(e=>{
+    sch.ex.forEach(e=>{
       const d=G.draft[e.id]||{}, prev=G.loads[e.id]||{};
       const kg=(d.kg!=null)?d.kg:(prev.kg!=null?prev.kg:e.k);
-      G.loads[e.id]={kg:kg,ok:!!d.ok,d:today};
+      G.loads[e.id]={kg:kg,ok:!!d.ok,d:t};
+      delete G.draft[e.id];
     });
-    G.last={date:today,let:G.next,mode:gyMode};
-    G.next=GYM_NEXT[G.next]; G.draft={}; gySave(); renderGym();
-    window.scrollTo({top:document.getElementById('gym-body').getBoundingClientRect().top+window.scrollY-120,behavior:'smooth'});
+    G.hist.push({date:t,let:gySel});
+    if(G.hist.length>200) G.hist=G.hist.slice(-200);
+    gySave(); renderGym();
+  });
+  const undo=document.getElementById('gy-undo');
+  if(undo) undo.addEventListener('click',()=>{
+    G.hist=G.hist.filter(x=>!(x.let===gySel && x.date===t)); gySave(); renderGym();
   });
 }
 renderGym();
