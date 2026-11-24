@@ -334,6 +334,20 @@
     .gy-ok.on { background:var(--green); border-color:var(--green); color:#fff; }
     .gy-done { display:block; width:100%; margin-top:14px; padding:12px; background:var(--purple); color:#fff; border:none; border-radius:10px; font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.1em; cursor:pointer; -webkit-tap-highlight-color:transparent; }
     .gy-done:active { opacity:0.8; }
+    .gy-meta[data-how] { cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .gy-how { font-family:'Space Mono',monospace; font-size:0.55rem; color:var(--celeste); margin-top:3px; }
+    .ht-wrap { padding:4px 0 12px; border-bottom:1px solid var(--border); }
+    .ht-box { background:var(--cream); border-radius:10px; padding:10px; }
+    .ht-pics { display:flex; align-items:center; gap:4px; }
+    .ht-pic { flex:1; text-align:center; }
+    .ht-svg { width:100%; height:auto; background:#fff; border-radius:8px; border:1px solid var(--border); display:block; }
+    .ht-lbl { font-family:'Bebas Neue',sans-serif; font-size:0.75rem; letter-spacing:0.12em; color:var(--muted); margin-top:3px; }
+    .ht-arr { color:var(--green); font-size:1.1rem; }
+    .ht-view { font-family:'Space Mono',monospace; font-size:0.5rem; color:var(--muted); text-align:center; margin:4px 0 6px; }
+    .ht-steps { margin:0 0 6px 18px; font-size:0.76rem; line-height:1.45; color:var(--ink); }
+    .ht-steps li { margin-bottom:3px; }
+    .ht-err { font-size:0.7rem; color:var(--red); line-height:1.4; margin-bottom:8px; }
+    .ht-yt { display:inline-block; font-family:'Bebas Neue',sans-serif; font-size:0.85rem; letter-spacing:0.1em; color:#fff; background:#C4302B; border-radius:8px; padding:6px 12px; text-decoration:none; }
     .gy-pick { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin:10px 0 6px; }
     .gy-card { text-align:left; border:1.5px solid var(--border); background:var(--cream); border-radius:10px; padding:8px 8px 9px; cursor:pointer; -webkit-tap-highlight-color:transparent; font-family:inherit; color:var(--ink); }
     .gy-card.on { border:2px solid var(--purple); background:rgba(92,58,138,0.08); }
@@ -484,7 +498,7 @@
 // ── AGGIORNAMENTO ─────────────────────────────────────
 // Ogni nuova versione del file cambia APP_VERSION. Il pulsante scarica la pagina
 // senza cache, confronta la versione e ricarica. Le spunte restano: sono salvate a parte.
-const APP_VERSION='2026-11-24.2';
+const APP_VERSION='2026-11-24.3';
 (function(){
   const p=new URLSearchParams(location.search);
   if(p.has('v') && !p.has('code')) history.replaceState({},'',location.pathname);
@@ -1402,6 +1416,148 @@ function renderLights(){
 }
 renderLights();
 
+// ── COME SI FA: illustrazioni disegnate in SVG (inizio → fine) ──
+// Ogni posa: punti del corpo (H testa, N collo/spalla, S1/S2 spalle in vista frontale, E/W gomito/polso,
+// P anca, K/F ginocchio/caviglia, Hl/T tallone/punta, *2 = secondo arto) + attrezzi (p).
+// Attrezzi: ['l'] cavo/telaio, ['L'] imbottitura spessa, ['r'] blocco, ['c'] peso/carrucola, ['a'] freccia movimento.
+const HOWTO={
+  latL:{v:'di profilo',p:[['L',40,83,64,83],['L',70,71,82,71],['L',45,84,47,48]],
+    s:{P:[52,80],N:[53,48],H:[49,38],K:[74,80],F:[76,106],E:[61,30],W:[63,14],p:[['l',63,2,63,14],['L',54,14,72,14],['a',84,22,84,44]]},
+    e:{P:[52,80],N:[51,48],H:[46,38],K:[74,80],F:[76,106],E:[42,64],W:[62,52],p:[['l',62,2,62,52],['L',54,52,72,52]]},
+    c:['Seduto, cosce bloccate sotto i cuscini, presa larga','Tira la barra al petto alto portando i gomiti giù e indietro','Risali lento fino a braccia distese'],
+    x:'Tirare dietro la nuca o dondolare col busto',q:'lat machine presa larga esecuzione'},
+  vog:{v:'di profilo',p:[['L',18,84,58,84],['L',87,62,87,98],['c',112,62,3]],
+    s:{P:[36,80],N:[42,48],H:[44,38],K:[64,66],F:[83,84],E:[62,54],W:[80,58],p:[['l',80,58,112,62],['a',100,40,70,40]]},
+    e:{P:[36,80],N:[40,48],H:[41,38],K:[64,66],F:[83,84],E:[24,60],W:[48,64],p:[['l',48,64,112,62]]},
+    c:['Piedi sulla pedana, ginocchia appena piegate, schiena dritta','Porta la maniglia all’ombelico stringendo le scapole','Torna avanti lento senza piegare la schiena'],
+    x:'Dondolare avanti e indietro con il busto',q:'pulley basso tiraggio centrale esecuzione'},
+  delt:{v:'di fronte',front:true,p:[['L',38,84,82,84]],
+    s:{P:[60,78],N:[60,40],H:[60,28],S1:[47,44],S2:[73,44],K:[50,90],F:[50,110],K2:[70,90],F2:[70,110],E:[43,64],W:[47,74],E2:[77,64],W2:[73,74],p:[['L',39,58,39,70],['L',81,58,81,70],['a',30,72,20,56],['a',90,72,100,56]]},
+    e:{P:[60,78],N:[60,40],H:[60,28],S1:[47,44],S2:[73,44],K:[50,90],F:[50,110],K2:[70,90],F2:[70,110],E:[26,46],W:[28,58],E2:[94,46],W2:[92,58],p:[['L',22,40,22,52],['L',98,40,98,52]]},
+    c:['Seduto, cuscini sulla parte esterna dei gomiti','Spingi in fuori e in alto con i gomiti, non con le mani','Sali fino all’altezza delle spalle, scendi in 2-3 secondi'],
+    x:'Alzare le spalle verso le orecchie',q:'lateral raise machine esecuzione'},
+  rfly:{v:'dall’alto',top:true,p:[['L',46,55,74,55]],
+    s:{H:[60,66],S1:[44,66],S2:[76,66],E:[48,44],W:[55,24],E2:[72,44],W2:[65,24],p:[['a',42,30,20,48],['a',78,30,100,48]]},
+    e:{H:[60,66],S1:[44,66],S2:[76,66],E:[24,62],W:[6,60],E2:[96,62],W2:[114,60]},
+    c:['Petto appoggiato al cuscino, maniglie davanti a te','Apri le braccia indietro quasi tese, stringendo le scapole','Torna avanti lento'],
+    x:'Usare lo slancio o piegare troppo i gomiti',q:'reverse pec deck deltoide posteriore esecuzione'},
+  curl:{v:'di profilo',db:true,p:[['L',34,96,62,38],['L',30,90,56,90]],
+    s:{P:[42,86],N:[56,50],H:[60,41],K:[64,86],F:[66,108],E:[56,70],W:[56,90],p:[['a',78,88,80,62]]},
+    e:{P:[42,86],N:[56,50],H:[60,41],K:[64,86],F:[66,108],E:[56,70],W:[69,56]},
+    c:['Panca inclinata, braccia giù dritte','Sali ruotando il palmo verso l’alto, gomiti fermi','Scendi in 2-3 secondi fino a braccio disteso'],
+    x:'Portare i gomiti in avanti o dondolare',q:'curl manubri panca inclinata esecuzione'},
+  bext:{v:'di profilo',p:[['L',58,88,72,74],['L',92,110,104,100],['l',72,80,100,106]],
+    s:{F:[98,104],K:[84,92],P:[68,78],N:[57,102],H:[50,108],E:[64,96],W:[58,100],p:[['c',58,100,4],['a',30,98,24,66]]},
+    e:{F:[98,104],K:[84,92],P:[68,78],N:[44,56],H:[37,49],E:[52,66],W:[46,62],p:[['c',46,62,4]]},
+    c:['Bacino appena sopra il cuscino, piastra stretta al petto','Scendi lento piegandoti dalle anche','Risali finché corpo e gambe sono in linea, non oltre'],
+    x:'Inarcare la schiena salendo oltre la linea',q:'back extension 45 gradi esecuzione'},
+  abd:{v:'di profilo',p:[['L',38,83,62,83],['L',43,80,46,44],['c',76,98,3]],
+    s:{P:[50,80],N:[52,48],H:[53,38],K:[72,80],F:[74,106],E:[62,54],W:[57,40],p:[['a',64,26,84,42]]},
+    e:{P:[50,80],N:[66,58],H:[74,52],K:[72,80],F:[74,106],E:[78,70],W:[73,57]},
+    c:['Seduto, mani sulle maniglie vicino alla testa','Arrotola il busto portando il petto verso il bacino','Espira chiudendo, risali lento'],
+    x:'Tirare con le braccia invece che con l’addome',q:'abdominal crunch machine esecuzione'},
+  lp:{v:'di profilo',p:[['L',14,66,34,100],['L',34,100,52,100]],
+    s:{P:[40,96],N:[22,70],H:[16,62],E:[34,90],W:[46,94],K:[58,62],F:[84,64],K2:[52,82],F2:[56,104],p:[['L',79,54,89,74],['a',70,40,100,26]]},
+    e:{P:[40,96],N:[22,70],H:[16,62],E:[34,90],W:[46,94],K:[72,76],F:[95,68],K2:[52,82],F2:[56,104],p:[['L',90,58,100,78]]},
+    c:['Un piede al centro della pedana, l’altro fuori','Scendi finché il ginocchio è a 90°','Spingi col tallone senza bloccare del tutto il ginocchio'],
+    x:'Staccare il bacino dallo schienale in basso',q:'leg press monolaterale esecuzione'},
+  ht:{v:'di profilo',p:[['L',8,72,36,72],['l',0,110,120,110]],
+    s:{N:[32,68],H:[24,62],P:[54,96],K:[78,76],F:[86,108],E:[22,74],W:[12,76],p:[['L',46,88,62,88],['a',66,104,66,80]]},
+    e:{N:[32,68],H:[24,62],P:[58,70],K:[84,70],F:[86,108],E:[22,74],W:[12,76],p:[['L',50,62,66,62]]},
+    c:['Parte alta della schiena sullo schienale, piedi sotto le ginocchia','Spingi i fianchi in alto fino alla linea spalle-anche-ginocchia','Stringi i glutei 1 secondo in alto, scendi lento'],
+    x:'Inarcare la zona lombare invece di spingere coi glutei',q:'hip thrust machine esecuzione'},
+  lc:{v:'di profilo',p:[['L',8,81,92,81]],
+    s:{H:[14,70],N:[24,74],P:[58,74],K:[84,74],F:[106,74],E:[18,84],W:[8,88],p:[['c',104,69,3],['a',110,60,98,40]]},
+    e:{H:[14,70],N:[24,74],P:[58,74],K:[84,74],F:[86,48],E:[18,84],W:[8,88],p:[['c',90,48,3]]},
+    c:['Sdraiato a pancia in giù, rullo sopra i talloni','Porta i talloni verso i glutei','Scendi in 3 secondi, bacino sempre attaccato alla panca'],
+    x:'Sollevare il sedere per aiutarti',q:'leg curl sdraiato esecuzione'},
+  hr:{v:'di profilo',p:[['r',60,100,48,12],['l',30,6,30,112]],
+    s:{H:[58,18],N:[58,28],P:[58,62],K:[58,80],F:[55,98],Hl:[51,104],T:[66,100],E:[44,38],W:[32,44],K2:[64,74],F2:[76,82],p:[['a',90,96,90,74]]},
+    e:{H:[58,8],N:[58,18],P:[58,52],K:[59,70],F:[60,88],Hl:[56,90],T:[66,100],E:[44,28],W:[32,34],K2:[64,64],F2:[76,72]},
+    c:['Avampiede sul bordo del gradino, una mano al muro','Scendi con il tallone sotto il gradino in 3 secondi','Risali sulla punta a velocità normale'],
+    x:'Rimbalzare in basso o non scendere sotto il gradino',q:'heel raise eccentrico gradino una gamba'},
+  pinc:{v:'di profilo',db:true,p:[['L',34,96,62,38],['L',30,90,56,90]],
+    s:{P:[42,86],N:[56,50],H:[60,41],K:[64,86],F:[66,108],E:[48,66],W:[65,56],p:[['a',86,56,88,24]]},
+    e:{P:[42,86],N:[56,50],H:[60,41],K:[64,86],F:[66,108],E:[66,36],W:[72,20]},
+    c:['Panca a 30-45°, scapole strette, manubri all’altezza del petto','Spingi in alto sopra il petto','Scendi lento finché senti allungare il petto'],
+    x:'Gomiti aperti a 90°: tienili a circa 45° dal busto',q:'panca inclinata manubri esecuzione'},
+  shp:{v:'di profilo',p:[['L',38,83,62,83],['L',44,82,47,30]],
+    s:{P:[50,80],N:[52,46],H:[48,36],K:[72,80],F:[74,106],E:[63,58],W:[66,42],p:[['L',60,42,72,42],['a',86,46,86,16]]},
+    e:{P:[50,80],N:[52,46],H:[48,36],K:[72,80],F:[74,106],E:[62,29],W:[65,13],p:[['L',59,13,71,13]]},
+    c:['Schiena appoggiata, maniglie all’altezza delle spalle','Spingi in alto','Non bloccare i gomiti in cima, scendi lento'],
+    x:'Inarcare la schiena per spingere di più',q:'shoulder press machine esecuzione'},
+  push:{v:'di profilo',p:[['c',82,4,3]],
+    s:{F:[56,108],K:[57,82],P:[56,58],N:[58,24],H:[60,13],E:[60,44],W:[75,36],p:[['l',82,4,75,36],['a',88,38,88,64]]},
+    e:{F:[56,108],K:[57,82],P:[56,58],N:[58,24],H:[60,13],E:[60,44],W:[63,64],p:[['l',82,4,63,64]]},
+    c:['In piedi davanti al cavo alto, gomiti incollati ai fianchi','Spingi giù fino a braccia tese','Risali muovendo solo l’avambraccio'],
+    x:'Muovere spalle o gomiti',q:'pushdown tricipiti cavo esecuzione'},
+  vcp:{v:'di profilo',p:[['L',38,83,62,83],['L',44,82,47,30]],
+    s:{P:[50,80],N:[52,46],H:[53,36],K:[72,80],F:[74,106],E:[40,58],W:[60,54],p:[['L',60,48,60,60],['a',66,36,94,36]]},
+    e:{P:[50,80],N:[52,46],H:[53,36],K:[72,80],F:[74,106],E:[70,52],W:[88,52],p:[['L',88,46,88,58]]},
+    c:['Seduto, maniglie all’altezza del petto','Spingi in avanti fino a braccia quasi tese','Torna indietro lento, schiena sempre appoggiata'],
+    x:'Staccare la schiena dallo schienale',q:'chest press verticale esecuzione'},
+  row:{v:'di profilo',p:[['L',38,83,62,83],['L',67,44,67,72]],
+    s:{P:[50,80],N:[60,48],H:[62,38],K:[72,80],F:[74,106],E:[76,58],W:[94,58],p:[['L',94,52,94,64],['a',100,38,72,38]]},
+    e:{P:[50,80],N:[60,48],H:[62,38],K:[72,80],F:[74,106],E:[40,56],W:[64,58],p:[['L',64,52,64,64]]},
+    c:['Petto appoggiato al cuscino','Tira i gomiti indietro stringendo le scapole','Torna avanti lento fino a braccia distese'],
+    x:'Staccare il petto dal cuscino per tirare',q:'rematore machine esecuzione'},
+  bfly:{v:'dall’alto',top:true,p:[['L',46,77,74,77]],
+    s:{H:[60,66],S1:[44,66],S2:[76,66],E:[28,56],W:[16,40],E2:[92,56],W2:[104,40],p:[['a',20,28,44,14],['a',100,28,76,14]]},
+    e:{H:[60,66],S1:[44,66],S2:[76,66],E:[46,44],W:[56,24],E2:[74,44],W2:[64,24]},
+    c:['Schiena appoggiata, gomiti appena piegati all’altezza del petto','Chiudi le braccia davanti, come ad abbracciare un albero','Riapri lento senza andare oltre la linea delle spalle'],
+    x:'Aprire troppo dietro le spalle',q:'butterfly machine pectoral fly esecuzione'},
+  sideb:{v:'di fronte',front:true,db:true,
+    s:{P:[60,66],K:[53,88],F:[52,108],K2:[67,88],F2:[68,108],N:[68,32],H:[73,22],S1:[57,28],S2:[79,37],E:[50,44],W:[56,60],E2:[84,58],W2:[86,78],p:[['a',100,76,96,46]]},
+    e:{P:[60,66],K:[53,88],F:[52,108],K2:[67,88],F2:[68,108],N:[60,30],H:[60,19],S1:[49,34],S2:[71,34],E:[42,48],W:[52,62],E2:[74,52],W2:[75,70]},
+    c:['In piedi, manubrio in una mano, l’altra sul fianco','Scendi di lato lungo la gamba senza ruotare il busto','Risali usando il fianco opposto; poi cambia lato'],
+    x:'Ruotare il busto o piegarsi in avanti',q:'side bend manubrio esecuzione'},
+  trot:{v:'dall’alto',top:true,p:[['l',54,70,52,40],['l',66,70,68,40],['L',44,34,76,34]],
+    s:{H:[60,66],S1:[42,66],S2:[78,66],E:[46,54],W:[53,48],E2:[74,54],W2:[67,48],p:[['a',96,70,88,44]]},
+    e:{rot:-38,H:[60,66],S1:[42,66],S2:[78,66],E:[46,54],W:[53,48],E2:[74,54],W2:[67,48]},
+    c:['Seduto, gambe bloccate, busto dritto','Ruota solo il busto da un lato, lento e controllato','Torna al centro; fai tutte le ripetizioni e cambia lato'],
+    x:'Usare lo slancio o un carico troppo pesante',q:'torso rotation machine esecuzione'},
+};
+const HT_SEGS=[['N','P'],['P','K'],['K','F'],['F','T'],['F','Hl'],['Hl','T'],['P','K2'],['K2','F2'],['S1','S2'],['S1','E'],['S2','E2'],['N','E'],['E','W'],['E2','W2'],['N','E2']];
+let htSeq=0;
+function htPose(ex,pose){
+  const id='hta'+(htSeq++);
+  const ink='#1A3A6A', prop='#9FB2CC', grn='#1A6842';
+  let g='<defs><marker id="'+id+'" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="'+grn+'"/></marker></defs>';
+  const props=(ex.p||[]).concat(pose.p||[]);
+  const drawProp=pr=>{
+    const t=pr[0];
+    if(t==='l') return '<line x1="'+pr[1]+'" y1="'+pr[2]+'" x2="'+pr[3]+'" y2="'+pr[4]+'" stroke="'+prop+'" stroke-width="2"/>';
+    if(t==='L') return '<line x1="'+pr[1]+'" y1="'+pr[2]+'" x2="'+pr[3]+'" y2="'+pr[4]+'" stroke="'+prop+'" stroke-width="6" stroke-linecap="round"/>';
+    if(t==='r') return '<rect x="'+pr[1]+'" y="'+pr[2]+'" width="'+pr[3]+'" height="'+pr[4]+'" rx="2" fill="#DCE5F1" stroke="'+prop+'" stroke-width="1.5"/>';
+    if(t==='c') return '<circle cx="'+pr[1]+'" cy="'+pr[2]+'" r="'+pr[3]+'" fill="#5C3A8A"/>';
+    return '';
+  };
+  g+=props.filter(pr=>pr[0]!=='a').map(drawProp).join('');
+  const P=pose;
+  let body='';
+  HT_SEGS.forEach(([a,b])=>{
+    if(!P[a]||!P[b]) return;
+    if(a==='N' && (b==='E'||b==='E2') && (P.S1||P.S2)) return; // vista frontale/alto: braccia dalle spalle
+    const back=!ex.front && !ex.top && (b==='K2'||b==='F2'||a==='K2'||b==='E2');
+    body+='<line x1="'+P[a][0]+'" y1="'+P[a][1]+'" x2="'+P[b][0]+'" y2="'+P[b][1]+'" stroke="'+ink+'" stroke-width="4.5" stroke-linecap="round"'+(back?' opacity="0.35"':'')+'/>';
+  });
+  if(ex.db && P.W) body+='<rect x="'+(P.W[0]-6)+'" y="'+(P.W[1]-2.5)+'" width="12" height="5" rx="2" fill="#5C3A8A"/>';
+  if(ex.db && ex.front && P.W2) body+='<rect x="'+(P.W2[0]-6)+'" y="'+(P.W2[1]-2.5)+'" width="12" height="5" rx="2" fill="#5C3A8A"/>';
+  if(P.H) body+='<circle cx="'+P.H[0]+'" cy="'+P.H[1]+'" r="'+(ex.top?9:7)+'" fill="#fff" stroke="'+ink+'" stroke-width="3.5"/>';
+  if(P.rot) body='<g transform="rotate('+P.rot+' '+P.H[0]+' '+P.H[1]+')">'+body+'</g>';
+  g+=body;
+  g+=props.filter(pr=>pr[0]==='a').map(pr=>'<line x1="'+pr[1]+'" y1="'+pr[2]+'" x2="'+pr[3]+'" y2="'+pr[4]+'" stroke="'+grn+'" stroke-width="2.5" stroke-linecap="round" marker-end="url(#'+id+')"/>').join('');
+  return '<svg viewBox="0 0 120 115" class="ht-svg" role="img">'+g+'</svg>';
+}
+function htBlock(exId,name){
+  const ex=HOWTO[exId]; if(!ex) return '';
+  let h='<div class="ht-box"><div class="ht-pics"><div class="ht-pic">'+htPose(ex,ex.s)+'<div class="ht-lbl">Inizio</div></div><div class="ht-arr">→</div><div class="ht-pic">'+htPose(ex,ex.e)+'<div class="ht-lbl">Fine</div></div></div>';
+  h+='<div class="ht-view">vista '+ex.v+'</div><ol class="ht-steps">'+ex.c.map(c=>'<li>'+gyEsc(c)+'</li>').join('')+'</ol>';
+  h+='<div class="ht-err">✗ Errore da evitare: '+gyEsc(ex.x)+'</div>';
+  h+='<a class="ht-yt" href="https://www.youtube.com/results?search_query='+encodeURIComponent(ex.q)+'" target="_blank" rel="noopener">▶ Guarda un video</a></div>';
+  return h;
+}
+
 // ── PALESTRA: tre schede complete, scegli tu quale fare ──
 // A e C = parte alta, qualsiasi giorno. B = gambe + spinta, solo quando le gambe non danno fastidio
 // alla corsa (mai il giorno prima di qualità o lungo). L'app ricorda cosa hai fatto in settimana.
@@ -1451,6 +1607,7 @@ let G={loads:{},draft:{},hist:[]};
 try{ const raw=localStorage.getItem(GYM_KEY); if(raw){ const o=JSON.parse(raw); G.loads=o.loads||{}; G.draft=o.draft||{}; G.hist=o.hist||[]; } }catch(e){}
 function gySave(){ try{ localStorage.setItem(GYM_KEY,JSON.stringify(G)); }catch(e){} }
 let gySel=null;
+let gyOpen={};
 
 function gyIso(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
 function gyAdd(iso,n){ const d=toDate(iso); d.setDate(d.getDate()+n); return gyIso(d); }
@@ -1518,11 +1675,12 @@ function renderGym(){
     const sr=e.leg?(ph.leg||'—'):e.sr;
     const sg=gyLoad(e,ph), d=G.draft[e.id]||{};
     const val=(d.kg!=null)?d.kg:sg.kg;
-    h+='<div class="gy-row"><div class="gy-meta"><div class="gy-name">'+gyEsc(e.n)+'</div><div class="gy-sr">'+gyEsc(sr)+(e.u?' · '+e.u:'')+'</div>';
+    h+='<div class="gy-row"><div class="gy-meta" data-how="'+e.id+'"><div class="gy-name">'+gyEsc(e.n)+'</div><div class="gy-how">'+(gyOpen[e.id]?'▲ chiudi':'▶ come si fa')+'</div><div class="gy-sr">'+gyEsc(sr)+(e.u?' · '+e.u:'')+'</div>';
     if(sg.up) h+='<div class="gy-up">↑ +'+gyFmt(e.st)+' kg: l’ultima volta hai chiuso il range ('+gyFmt(sg.from)+')</div>';
     if(e.alt) h+='<div class="gy-alt">'+gyEsc(e.alt)+'</div>';
     h+='</div><input class="gy-kg'+(sg.up?' up':'')+'" type="number" inputmode="decimal" step="0.5" min="0" placeholder="kg" data-kg="'+e.id+'" value="'+(val==null?'':val)+'">';
     h+='<button class="gy-ok'+(d.ok?' on':'')+'" data-ok="'+e.id+'" title="chiuso il range con 2 in riserva">✓</button></div>';
+    if(gyOpen[e.id]) h+='<div class="ht-wrap">'+htBlock(e.id)+'</div>';
   });
   const doneToday=G.hist.some(x=>x.let===gySel && x.date===t);
   h+=doneToday?'<button class="gy-done undo" id="gy-undo">↶ Annulla "fatta oggi"</button>'
@@ -1530,7 +1688,8 @@ function renderGym(){
   h+='<div class="edit-hint">2 volte a settimana: A o C + B (gambe). 3 volte: tutte e tre. ✓ verde su un esercizio = tutte le serie in cima al range con 2 ripetizioni in riserva: la volta dopo l’app propone il carico successivo.</div>';
   body.innerHTML=h;
 
-  body.querySelectorAll('[data-sel]').forEach(b=>b.addEventListener('click',()=>{ gySel=b.dataset.sel; renderGym(); }));
+  body.querySelectorAll('[data-how]').forEach(m=>m.addEventListener('click',()=>{ const id=m.dataset.how; gyOpen[id]=!gyOpen[id]; renderGym(); }));
+  body.querySelectorAll('[data-sel]').forEach(b=>b.addEventListener('click',()=>{ gySel=b.dataset.sel; gyOpen={}; renderGym(); }));
   body.querySelectorAll('[data-kg]').forEach(inp=>inp.addEventListener('change',()=>{
     const id=inp.dataset.kg, v=parseFloat(String(inp.value).replace(',','.'));
     G.draft[id]=Object.assign({},G.draft[id],{kg:isNaN(v)?null:v}); gySave();
